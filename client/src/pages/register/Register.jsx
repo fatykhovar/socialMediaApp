@@ -2,11 +2,11 @@ import "./register.css";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import React, { Component }  from 'react';
+import React from 'react';
 
 const Register = () => {
   const [inputs, setInputs] = useState({
-    username: "",
+    login: "",
     email: "",
     password: "",
     name: "",
@@ -23,7 +23,7 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:8800/api/auth/register", inputs);
+      await axios.post("http://localhost:3001/api/auth/register", inputs);
       navigate("/");
     } catch (err) {
       setErr(err.response.data);
@@ -52,8 +52,8 @@ const Register = () => {
           <form>
             <input
               type="text"
-              placeholder="Username"
-              name="username"
+              placeholder="Login"
+              name="login"
               onChange={handleChange}
             />
             <input
