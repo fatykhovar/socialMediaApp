@@ -34,34 +34,6 @@ export const login= (req, res) => {
   const login = req.body.login;
   const password = req.body.password;
   
-  // pool.query(
-  //   "SELECT * FROM users WHERE login = $1",
-  //   [login],
-  //   (err, results) => {
-  //       console.log('res:', results.rows[0]);
-  //     if (results){
-  //       console.log('res:', results);
-  //     }
-      
-  //     if (err) {
-  //       console.log(err);
-  //     }
-  //     if (results) {
-  //       if (password == results.rows[0].password) {
-  //         res.json({ loggedIn: true, login: login
-  //         });
-  //       } else {
-  //         res.json({
-  //           loggedIn: false,
-  //           message: "Неправильный логин или пароль.",
-  //         });
-  //       }
-  //     } else {
-  //       res.json({ loggedIn: false, message: "Пользователь не существует." });
-  //     }
-  //     console.log("loggedIn: ", loggedIn);
-  //   }
-  // );
 
   const q = "SELECT * FROM users WHERE login = $1";
 

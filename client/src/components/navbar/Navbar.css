@@ -29,6 +29,20 @@
   padding: 20px;
 }
 
+.navbar .a {
+  color: darkslateblue;
+}
+
+.navbar .right a:link, a:visited {
+  color: rgb(144, 76, 223);
+  font-size: 2ch;
+  font-weight:bold;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
 .navbar .left span {
   font-weight: bold;
   font-size: 20px;
