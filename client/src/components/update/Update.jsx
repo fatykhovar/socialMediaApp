@@ -71,7 +71,7 @@ const Update = ({ setOpenUpdate, user }) => {
           <form>
             <div className="files">
               <label htmlFor="cover">
-                <span>Cover Picture</span>
+                <span>Обложка</span>
                 <div className="imgContainer">
                   <img
                     src={
@@ -91,7 +91,7 @@ const Update = ({ setOpenUpdate, user }) => {
                 onChange={(e) => setCover(e.target.files[0])}
               />
               <label htmlFor="profile">
-                <span>Profile Picture</span>
+                <span>Фото профиля</span>
                 <div className="imgContainer">
                   <img
                     src={
@@ -118,21 +118,21 @@ const Update = ({ setOpenUpdate, user }) => {
               name="email"
               onChange={handleChange}
             />
-            <label>Password</label>
+            <label>Пароль</label>
             <input
               type="text"
               value={texts.password}
               name="password"
               onChange={handleChange}
             />
-            <label>Name</label>
+            <label>Имя</label>
             <input
               type="text"
               value={texts.name}
               name="name"
               onChange={handleChange}
             />
-            <label>Country / City</label>
+            <label>Стрвна / Город</label>
             <input
               type="text"
               name="city"

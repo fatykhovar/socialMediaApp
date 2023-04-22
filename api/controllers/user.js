@@ -28,19 +28,20 @@ export const updateUser = (req, res) => {
     //   "UPDATE users SET `name`=?,`city`=?,`website`=?,`profilePic`=?,`coverPic`=? WHERE id=? ";
 
     const q =
-    "UPDATE users SET name= $1, profilePic= $2, coverPic =$3 WHERE id= $4";
+    "UPDATE users SET name= $1, profilepic= $2, coverpic =$3 WHERE id= $4";
     pool.query(
       q,
       [
         req.body.name[0],
         // req.body.city,
         // req.body.website,
-        req.body.coverPic,
-        req.body.profilePic,
+        req.body.profilepic,
+        req.body.coverpic,
         userInfo.id,
       ],
       (err, data) => {
-        console.log("q data: ", data);
+        console.log("userinfo: ", userInfo);
+        console.log("err: ",err);
         if (err) res.status(500).json(err);
         if (data) return res.json("Updated!");
         return res.status(403).json("You can update only your post!");

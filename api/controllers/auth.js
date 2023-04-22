@@ -20,8 +20,8 @@ export const register = (req, res) => {
 
     console.log(id, login, password, email, name);
     pool.query(
-      "INSERT INTO users (id, login, password, email, name) VALUES ($1, $2, $3, $4, $5)",
-      [id, login, password, email, name],
+      "INSERT INTO users (login, password, email, name) VALUES ($1, $2, $3, $4)",
+      [login, password, email, name],
       (err, results) => {
         console.log(err);
         res.send(results);

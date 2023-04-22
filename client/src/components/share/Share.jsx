@@ -27,7 +27,7 @@ const Share = () => {
   };
 
   const { currentUser } = useContext(AuthContext);
-
+  console.log(currentUser);
   const queryClient = useQueryClient();
 
   const mutation = useMutation(
@@ -56,7 +56,7 @@ const Share = () => {
       <div className="container">
         <div className="top">
           <div className="left">
-            <img src={"/upload/" + currentUser.profilePic} alt="" />
+            <img src={"/upload/" + currentUser.profilepic} alt="" />
             <input
               type="text"
               placeholder={`Что нового?`}
@@ -82,19 +82,16 @@ const Share = () => {
             <label htmlFor="file">
               <div className="item">
                 <ImageIcon/>
-                {/* <img src={Image} alt="" /> */}
-                <span>Add Image</span>
+                <span>Фотография</span>
               </div>
             </label>
             <div className="item">
               <AddLocationAltIcon/>
-              {/* <img src={Map} alt="" /> */}
-              <span>Add Place</span>
+              <span>Место</span>
             </div>
             <div className="item">
               <PersonPinCircleIcon />
-              {/* <img src={Friend} alt="" /> */}
-              <span>Tag Friends</span>
+              <span>Друзья</span>
             </div>
           </div>
           <div className="right">

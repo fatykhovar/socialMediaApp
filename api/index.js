@@ -1,8 +1,8 @@
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/user.js";
 import postRoutes from "./routes/posts.js";
-// import commentRoutes from "./routes/comments.js";
-// import likeRoutes from "./routes/likes.js";
+import commentRoutes from "./routes/comments.js";
+import likeRoutes from "./routes/likes.js";
 // import storyRoutes from "./routes/stories.js";
 // import relationshipRoutes from "./routes/relationships.js";
 import express from "express";
@@ -42,8 +42,8 @@ app.post("/api/upload", upload.single("file"), (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/posts", postRoutes);
-// app.use("/api/comments", commentRoutes);
-// app.use("/api/likes", likeRoutes);
+app.use("/api/comments", commentRoutes);
+app.use("/api/likes", likeRoutes);
 // app.use("/api/relationships", relationshipRoutes);
 // app.use("/api/stories", storyRoutes);
 app.listen(3001, (req, res) => {

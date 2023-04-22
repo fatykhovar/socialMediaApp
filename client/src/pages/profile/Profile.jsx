@@ -8,7 +8,7 @@ import PlaceIcon from "@mui/icons-material/Place";
 import LanguageIcon from "@mui/icons-material/Language";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-// import Posts from "../../components/posts/Posts";
+import Posts from "../../components/posts/Posts";
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import { makeRequest } from "../../axios";
 import { useLocation } from "react-router-dom";
@@ -32,7 +32,7 @@ const Profile = () => {
       return res.data;
     })
   );
-  console.log("data: ", data)
+  console.log("profile data: ",data)
 //   const { isLoading: rIsLoading, data: relationshipData } = useQuery(
 //     ["relationship"],
 //     () =>
@@ -69,10 +69,10 @@ const Profile = () => {
         <>
           <div className="images">
             <img
-             src={"/upload/16817442441814fbe8e818c449587d591359ac892cba2.jpg"}
+             src={"/upload/" + data.coverpic}
               alt="" className="cover" />
             <img
-             src={"/upload/" + data.profilePic}
+             src={"/upload/" + data.profilepic}
               alt="" className="profilePic" />
           </div>
           <div className="profileContainer">
@@ -101,7 +101,7 @@ const Profile = () => {
                 <MoreVertIcon />
               </div>
             </div>
-            {/* <Posts userId={userId} /> */}
+            <Posts userId={userId} />
           </div>
         </>
       )} 

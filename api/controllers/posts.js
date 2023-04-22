@@ -6,7 +6,7 @@ export const getPosts = (req, res) => {
   const userId = req.query.userId;
   const token = req.cookies.accessToken;
   if (!token) return res.status(401).json("Not logged in!");
-  console.log("getPosts req: ", req);
+  // console.log("getPosts req: ", req);
 
   jwt.verify(token, "secretkey", (err, userInfo) => {
     if (err) return res.status(403).json("Token is not valid!");
@@ -20,13 +20,17 @@ export const getPosts = (req, res) => {
     // LEFT JOIN relationships AS r ON (p.userId = r.followedUserId) WHERE r.followerUserId= ? OR p.userId =?
     // ORDER BY p.createdAt DESC`;
 
-    const q = "SELECT * FROM posts"
-
+    const q = 
+      userId !== "undefined"
+        ? "SELECT p.*, u.id AS userid, name, profilepic FROM posts AS p JOIN users AS u ON (u.id = p.userid) WHERE p.userId = $1"
+        :"SELECT p.*, u.id AS userid, name, profilepic FROM posts AS p JOIN users AS u ON (u.id = p.userid)"
+    const q1 = "SELECT * FROM posts"
     const values =
-      userId !== "undefined" ? [userId] : [userInfo.id, userInfo.id];
+      userId !== "undefined" ? [userId] : [];
 
-    pool.query(q, (err, data) => {
-      console.log("getPosts data: ", data);
+    pool.query(q, values, (err, data) => {
+      // console.log("getPosts data: ", data);
+      // console.log("posts err: ", err);
       if (err) return res.status(500).json(err);
       return res.status(200).json(data);
     });
@@ -39,7 +43,7 @@ export const addPost = (req, res) => {
 
   jwt.verify(token, "secretkey", (err, userInfo) => {
     if (err) return res.status(403).json("Token is not valid!");
-    console.log("addPost req: ", req.body);
+    // console.log("addPost req: ", req.body);
     const q =
       "INSERT INTO posts (description, image, userId) VALUES ($1, $2, $3)";
     pool.query(
@@ -52,8 +56,8 @@ export const addPost = (req, res) => {
         userInfo.id
       ], 
       (err, data) => {
-      console.log("addpost data: ", data);
-      console.log("addpost err: ", err);
+      // console.log("addpost data: ", data);
+      // console.log("addpost err: ", err);
 
       if (err) return res.status(500).json(err);
       return res.status(200).json("Post has been created.");
@@ -67,9 +71,10 @@ export const deletePost = (req, res) => {
   jwt.verify(token, "secretkey", (err, userInfo) => {
     if (err) return res.status(403).json("Token is not valid!");
 
-    const q = "DELETE FROM posts WHERE `id`=? AND `userId` = ?";
+    const q = "DELETE FROM posts WHERE id=$1 AND userid = $2";
 
     pool.query(q, [req.params.id, userInfo.id], (err, data) => {
+      console.log("delpost err: ", err);
       if (err) return res.status(500).json(err);
       if (data.affectedRows > 0)
         return res.status(200).json("Post has been deleted.");
