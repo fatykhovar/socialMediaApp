@@ -54,8 +54,8 @@ const Update = ({ setOpenUpdate, user }) => {
 
     let coverUrl;
     let profileUrl;
-    coverUrl = cover ? await upload(cover) : user.coverPic;
-    profileUrl = profile ? await upload(profile) : user.profilePic;
+    coverUrl = cover ? await upload(cover) : user.coverpic;
+    profileUrl = profile ? await upload(profile) : user.profilepic;
 
     mutation.mutate({ ...texts, coverPic: coverUrl, profilePic: profileUrl });
     setOpenUpdate(false);
@@ -77,7 +77,7 @@ const Update = ({ setOpenUpdate, user }) => {
                     src={
                       cover
                         ? URL.createObjectURL(cover)
-                        : "/upload/" + user.coverPic
+                        : "/upload/" + user.coverpic
                     }
                     alt=""
                   />
@@ -97,7 +97,7 @@ const Update = ({ setOpenUpdate, user }) => {
                     src={
                       profile
                         ? URL.createObjectURL(profile)
-                        : "/upload/" + user.profilePic
+                        : "/upload/" + user.profilepic
                     }
                     alt=""
                   />
@@ -132,7 +132,7 @@ const Update = ({ setOpenUpdate, user }) => {
               name="name"
               onChange={handleChange}
             />
-            <label>Стрвна / Город</label>
+            <label>Город</label>
             <input
               type="text"
               name="city"
@@ -150,7 +150,7 @@ const Update = ({ setOpenUpdate, user }) => {
           </form>
         </div>
         <button className="close" onClick={() => setOpenUpdate(false)}>
-          close
+          Закрыть
         </button>
       </div>
     </div>

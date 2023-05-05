@@ -15,6 +15,21 @@ export const getUser = (req, res) => {
   });
 };
 
+export const searchUsers = (req, res) => {
+  // const key = req.params.key;
+  // console.log("key: ", key);
+  // const q = "SELECT * FROM users WHERE name LIKE $1"
+  const q = "SELECT * FROM users"
+  
+  pool.query(q, (err, data) => {
+    console.log("searchUsers data: ", data.rows);
+    console.log("searchUsers err: ",err);
+    if (err) return res.status(500).json(err);
+    const { password, ...info } = data.rows;
+    return res.json(info);
+  });
+};
+
 export const updateUser = (req, res) => {
   const token = req.cookies.accessToken;
   // console.log(req);
@@ -23,21 +38,18 @@ export const updateUser = (req, res) => {
   console.log("req.body: ", req.body);
   jwt.verify(token, "secretkey", (err, userInfo) => {
     if (err) return res.status(403).json("Token is not valid!");
-
-    // const q =
-    //   "UPDATE users SET `name`=?,`city`=?,`website`=?,`profilePic`=?,`coverPic`=? WHERE id=? ";
-
+    console.log("update userInfo: ", userInfo)
     const q =
-    "UPDATE users SET name= $1, profilepic= $2, coverpic =$3 WHERE id= $4";
+    "UPDATE users SET name=$1, city=$2, profilePic=$3, coverPic=$4 WHERE id=$5";
     pool.query(
       q,
       [
         req.body.name[0],
-        // req.body.city,
+        req.body.city[0],
         // req.body.website,
-        req.body.profilepic,
-        req.body.coverpic,
-        userInfo.id,
+        req.body.profilePic,
+        req.body.coverPic,
+        userInfo.id
       ],
       (err, data) => {
         console.log("userinfo: ", userInfo);

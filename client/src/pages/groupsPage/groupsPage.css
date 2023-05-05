@@ -1,0 +1,71 @@
+.groupsPage {
+    top: 0;
+    left: 0;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    width: 100%;
+}
+
+.groupsPage .navbar{
+    gap: 20px;
+}
+
+@media (max-width: 480px) {
+    .groupsPage {
+    width: 100%;
+    height: 100%;
+}
+}
+
+.groupsPage h1 {
+color: rgb(126, 126, 126);
+
+}
+
+@media (max-width: 480px) {
+    .groupsPage h1 {
+    font-size: 20px;
+}
+}
+
+.groupsPage .scroller {
+    overflow-y: scroll;
+    scrollbar-color: rebeccapurple green;
+    scrollbar-width: thin;
+    }
+
+.groupsPage  .search {
+    color:  rgb(101, 43, 168);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    gap: 10px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding: 5px;
+    width: 70%;
+}
+
+.groupsPage  .search input {
+border: none;
+width: 500px;
+background-color: transparent;
+color: #000;
+}
+
+@media (max-width: 480px) {
+    .groupsPage  .search input {
+    display: none;
+}
+}
+
+@media (max-width: 960px) {
+    .groupsPage  .search input {
+    width: 200px;
+}
+}

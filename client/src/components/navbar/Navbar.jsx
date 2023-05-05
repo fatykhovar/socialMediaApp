@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 // import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 // import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import SearchIcon from '@mui/icons-material/Search';
+import SearchOutlinedIcon from '@mui/icons-material/Search';
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
@@ -16,11 +16,13 @@ import { useContext } from "react";
 import { AuthContext } from "../../context/authContext";
 
 const Navbar = () => {
-  // const { toggle, darkMode } = useContext(DarkModeContext);
   const {currentUser, logout} = useContext(AuthContext);
-  // const navigate = useNavigate();
   console.log(currentUser);
-  // const navigate = useNavigate();
+
+  const handleSearch =  (e) =>{
+    console.warn(e.target.value);
+  }
+
 
   const hanleLogout = async (e) => {
     e.preventDefault();
@@ -40,22 +42,23 @@ const Navbar = () => {
             <a href="/">
               <span>SocialNetwork</span>
             </a>
-              <a href="/upload">Создать пост</a>
               {/* <a href="/profile">Мой профиль</a> */}
-              <div className="user">
-                <a href={"/profile/" + currentUser.id }>
-                  <PersonOutlinedIcon/>
-                  {/* <img src={"/upload/" + currentUser.profilePic} alt="" href="/profile"/>
-                  <span>{currentUser.name}</span> */}
-                </a>
-              </div> 
+              
               {/* <SearchIcon /> */}
           </div>
           <div className="right">
-              {/* <a href="/register">Зарегистрироваться</a>
-              <a href="/login">Войти</a> */}
-              <LogoutIcon onClick={hanleLogout} />
-              {/* <a href="/login" >Выйти</a> */}
+            <div className="search">
+              <SearchOutlinedIcon />
+              <input type="text" placeholder="Поиск..." onChange={handleSearch} />
+            </div>
+            <div className="user">
+              <a href={"/profile/" + currentUser.id }>
+                <PersonOutlinedIcon/>
+              </a>
+            </div> 
+              <a href={"/login"}>
+                <LogoutIcon onClick={hanleLogout} />
+              </a>
           </div>
         </>
       ) : (

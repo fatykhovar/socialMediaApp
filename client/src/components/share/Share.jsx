@@ -1,7 +1,4 @@
 import "./share.css";
-// import Image from "../../assets/img.png";
-// import Map from "../../assets/map.png";
-// import Friend from "../../assets/friend.png";
 import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import ImageIcon from '@mui/icons-material/Image';

@@ -3,14 +3,14 @@ import userRoutes from "./routes/user.js";
 import postRoutes from "./routes/posts.js";
 import commentRoutes from "./routes/comments.js";
 import likeRoutes from "./routes/likes.js";
-// import storyRoutes from "./routes/stories.js";
-// import relationshipRoutes from "./routes/relationships.js";
+import groupRoutes from "./routes/groups.js"
+import relationshipRoutes from "./routes/relationships.js";
 import express from "express";
-const app = express();
 import cors from "cors";
 import multer from "multer";
 import cookieParser from "cookie-parser";
 
+const app = express();
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Credentials", true);
   next();
@@ -44,8 +44,9 @@ app.use("/api/user", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/likes", likeRoutes);
-// app.use("/api/relationships", relationshipRoutes);
-// app.use("/api/stories", storyRoutes);
+app.use("/api/relationships", relationshipRoutes);
+app.use("/api/groups", groupRoutes);
+
 app.listen(3001, (req, res) => {
     console.log("Server running...");
   });

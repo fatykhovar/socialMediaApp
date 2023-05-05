@@ -4,6 +4,9 @@ import Register from "./pages/register/Register";
 import Login from "./pages/login/Login";
 import Home from "./pages/home/Home";
 import Profile from "./pages/profile/Profile";
+import GroupsPage from "./pages/groupsPage/GroupsPage";
+import Group from './pages/group/Group';
+import LeftBar from "./components/leftBar/LeftBar";
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import React from 'react';
 import { useContext } from "react";
@@ -26,7 +29,7 @@ const Layout = () => {
     <QueryClientProvider client={queryClient}>
         <Navbar />
         <div style={{ display: "flex" }}>
-          {/* <LeftBar /> */}
+          <LeftBar />
           <div style={{ flex: 6 }}>
             <Outlet />
           </div>
@@ -68,6 +71,14 @@ const router = createBrowserRouter([
       {
         path: "/profile/:id",
         element: <Profile />,
+      },
+      {
+        path: "/groups",
+        element: <GroupsPage />,
+      },
+      {
+        path: "/group/:id",
+        element: <Group />,
       },
     ],
   },

@@ -1,6 +1,6 @@
 import { pool } from "../pool.js";
 import jwt from "jsonwebtoken";
-// import moment from "moment";
+import moment from "moment";
 
 export const getPosts = (req, res) => {
   const userId = req.query.userId;
@@ -22,8 +22,8 @@ export const getPosts = (req, res) => {
 
     const q = 
       userId !== "undefined"
-        ? "SELECT p.*, u.id AS userid, name, profilepic FROM posts AS p JOIN users AS u ON (u.id = p.userid) WHERE p.userId = $1"
-        :"SELECT p.*, u.id AS userid, name, profilepic FROM posts AS p JOIN users AS u ON (u.id = p.userid)"
+        ? "SELECT p.*, u.id AS userid, name, profilepic FROM posts AS p JOIN users AS u ON (u.id = p.userid) WHERE p.userId = $1 ORDER BY p.createdAt DESC"
+        :"SELECT p.*, u.id AS userid, name, profilepic FROM posts AS p JOIN users AS u ON (u.id = p.userid) ORDER BY p.createdAt DESC"
     const q1 = "SELECT * FROM posts"
     const values =
       userId !== "undefined" ? [userId] : [];
@@ -45,14 +45,14 @@ export const addPost = (req, res) => {
     if (err) return res.status(403).json("Token is not valid!");
     // console.log("addPost req: ", req.body);
     const q =
-      "INSERT INTO posts (description, image, userId) VALUES ($1, $2, $3)";
+      "INSERT INTO posts (description, image, createdat, userId) VALUES ($1, $2, $3, $4)";
     pool.query(
       q, 
       [
         // 1,
         req.body.desc,
         req.body.img,
-      //   moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
+        moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
         userInfo.id
       ], 
       (err, data) => {
@@ -64,6 +64,7 @@ export const addPost = (req, res) => {
     });
   });
 };
+
 export const deletePost = (req, res) => {
   const token = req.cookies.accessToken;
   if (!token) return res.status(401).json("Not logged in!");

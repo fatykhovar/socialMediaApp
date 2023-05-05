@@ -1,0 +1,95 @@
+ .leftBar {
+  -webkit-box-flex: 2;
+      -ms-flex: 2;
+          flex: 2;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 70px;
+  height: calc(100vh - 70px);
+  overflow: scroll;
+  background-color: white;
+  color: #000;
+}
+
+@media (max-width: 480px) {
+  .leftBar {
+    display: none;
+  }
+}
+
+.leftBar::-webkit-scrollbar {
+  display: none;
+}
+
+.leftBar .container {
+  padding: 20px;
+}
+
+.leftBar .container hr {
+  margin: 20px 0px;
+  border: none;
+  height: 0.5px;
+  background-color: lightgray;
+}
+ .leftBar .container .menu {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 20px;
+}
+
+.leftBar .container .menu span {
+  font-size: 12px;
+}
+
+.leftBar .container .menu .user {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 10px;
+}
+
+/* .leftBar .container .menu .user .item .a:link{
+  color:  rgb(101, 43, 168);
+  text-decoration: none;
+  font-weight:bold;
+
+} */
+
+.leftBar .container .menu .user img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+ .leftBar .container .menu .user span {
+  font-size: 14px;
+}
+
+ .leftBar .container .menu .item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 10px;
+}
+
+ .leftBar .container .menu .item img {
+  width: 30px;
+}
+
+ .leftBar .container .menu .item span {
+  font-size: 14px;
+}
+

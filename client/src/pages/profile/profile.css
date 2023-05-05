@@ -30,6 +30,8 @@
 
  .profile .profileContainer {
   padding: 20px 70px;
+  width: 60%;
+  margin: 0 auto;
 }
 
 @media (max-width: 480px) {

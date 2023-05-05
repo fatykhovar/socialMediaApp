@@ -2,31 +2,30 @@ import {pool} from "../pool.js"
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-function foo() {
-      if( typeof foo.counter == 'undefined' ) {
-        foo.counter = 0;
-      }
-      foo.counter++;
-      return foo.counter;
-    }
+    const saltRounds = 10;
+    const myPlaintextPassword = 's0/\/\P4$$w0rD';
+    const someOtherPlaintextPassword = 'not_bacon';
 
 export const register = (req, res) => {
     const login = req.body.login;
     const password = req.body.password;
     const email = req.body.email;
     const name = req.body.name;
+  
+    bcrypt.genSalt(saltRounds, function(err, salt) {
+      bcrypt.hash(password, salt, function(err, hash) {
+          pool.query(
+          "INSERT INTO users (login, password, email, name) VALUES ($1, $2, $3, $4)",
+          [login, hash, email, name],
+          (err, results) => {
+            console.log(err);
+            res.send(results);
+          }
+        );
+      });
+  });
+    console.log(login, password, email, name);
     
-    var id = foo();
-
-    console.log(id, login, password, email, name);
-    pool.query(
-      "INSERT INTO users (login, password, email, name) VALUES ($1, $2, $3, $4)",
-      [login, password, email, name],
-      (err, results) => {
-        console.log(err);
-        res.send(results);
-      }
-    );
   }
 
 export const login= (req, res) => {
@@ -45,25 +44,22 @@ export const login= (req, res) => {
     if (err) return res.status(500).json(err);
     if (data.rowCount === 0) return res.status(404).json("User not found!");
 
-    // const checkPassword = bcrypt.compareSync(
-    //   req.body.password,
-    //   data.rows[0].password
-    // );
-    // console.log(checkPassword);
-    if (req.body.password != data.rows[0].password)
-      return res.status(400).json("Wrong password or login!");
+    bcrypt.compare(req.body.password, data.rows[0].password).then(function(result) {
+      if (!result)
+        return res.status(400).json("Wrong password or login!");
+      const token = jwt.sign({ id: data.rows[0].id }, "secretkey");
 
-    const token = jwt.sign({ id: data.rows[0].id }, "secretkey");
+      const { password, ...others } = data.rows[0];
 
-    const { password, ...others } = data.rows[0];
-
-    res
-      .cookie("accessToken", token, {
-        httpOnly: true,
-      })
-      .status(200)
-      .json(others);
+      res
+        .cookie("accessToken", token, {
+          httpOnly: true,
+        })
+        .status(200)
+        .json(others);
+    });
   });
+    
 };
 
 export const logout = (req, res) => {
