@@ -9,6 +9,7 @@
   overflow: scroll;
   background-color: white;
   color: #000;
+  /* left: 200px; */
 }
 
 @media (max-width: 480px) {

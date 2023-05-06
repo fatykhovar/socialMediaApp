@@ -28,7 +28,9 @@ const LeftBar = () => {
             <span>Новости</span>
           </div>
           <div className="item">
-            <GroupIcon/>
+            <a href="/friends">
+              <GroupIcon/>
+            </a>
             <span>Друзья</span>
           </div>
           <div className="item">

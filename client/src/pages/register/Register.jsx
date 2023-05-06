@@ -26,11 +26,10 @@ const Register = () => {
       await axios.post("http://localhost:3001/api/auth/register", inputs);
       navigate("/");
     } catch (err) {
+      console.log("reg err: ", err)
       setErr(err.response.data);
     }
   };
-
-  console.log(err);
 
   return (
     <div className="register">
@@ -38,11 +37,9 @@ const Register = () => {
         <div className="left">
           <h1>Social Network.</h1>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero cum,
-            alias totam numquam ipsa exercitationem dignissimos, error nam,
-            consequatur.
+            Приложение для ведения блога.
           </p>
-          <span>Do you have an account?</span>
+          <span>Уже зарегистрированы?</span>
           <Link to="/login">
             <button>Войти</button>
           </Link>
@@ -52,29 +49,60 @@ const Register = () => {
           <form>
             <input
               type="text"
-              placeholder="Login"
+              placeholder="Логин"
               name="login"
               onChange={handleChange}
             />
             <input
               type="email"
-              placeholder="Email"
+              placeholder="Эл. почта"
               name="email"
               onChange={handleChange}
             />
+            {Array.isArray(err) && err.includes("Invalid email!") ? (
+              <div className="error">
+                <span>Неправильный адрес эл. почты.</span>
+              </div>
+            ) : (
+              <></>
+            )
+            }
             <input
               type="password"
-              placeholder="Password"
+              placeholder="Пароль"
               name="password"
               onChange={handleChange}
             />
+            {Array.isArray(err) && err.includes('Invalid password!') ? (
+              <div className="error">
+                <span>Пароль должен состоять не менее, чем из 8 символов, включать в себя цифры и не менее 2 заглавных букв.</span>
+              </div>
+            ) : (
+              <></>
+            )
+            }
             <input
               type="text"
-              placeholder="Name"
+              placeholder="Имя профиля"
               name="name"
               onChange={handleChange}
             />
-            {err && err}
+            {Array.isArray(err) && err.includes('Duplicate!') ? (
+              <div className="error">
+                <span>Такой логин или эл. почта уде существуют.</span>
+              </div>
+            ) : (
+              <></>
+            )
+            }
+            {Array.isArray(err) && err.includes('Empty inputs!') ? (
+              <div className="error">
+                <span>Заполните пустые поля.</span>
+              </div>
+            ) : (
+              <></>
+            )
+            }
             <button onClick={handleClick}>Зарегистрировться</button>
           </form>
         </div>

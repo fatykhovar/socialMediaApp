@@ -9,13 +9,13 @@ const GroupCard = ({group}) => {
       <div className="container">
         <div className="top">
           <div className="left">
-            <img src={"/upload/" + group.profilepic} alt="" />
+            <img src={"/upload/" + group.groupprofilepic} alt="" />
             <Link
                 to={`/group/${group.id}`}
                 style={{ textDecoration: "none", color: "inherit" }}
               >
               {console.log("group: ", group)}
-              <span className="name">{group.name}</span>
+              <span className="name">{group.groupname}</span>
             </Link>
           </div>
            {/* <div className="right">

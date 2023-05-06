@@ -1,4 +1,4 @@
-import "./friend.css";
+import "./friendCard.css";
 import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import ImageIcon from '@mui/icons-material/Image';
@@ -9,7 +9,7 @@ import { makeRequest } from "../../axios";
 import React  from 'react';
 import { Link } from "react-router-dom";
 
-const Friend = ({user}) => {
+const FriendCard = ({user}) => {
 
   return (
     <div className="friend">
@@ -40,4 +40,4 @@ const Friend = ({user}) => {
   );
 };
 
-export default Friend;
+export default FriendCard;

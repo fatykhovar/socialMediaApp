@@ -5,6 +5,7 @@ import Login from "./pages/login/Login";
 import Home from "./pages/home/Home";
 import Profile from "./pages/profile/Profile";
 import GroupsPage from "./pages/groupsPage/GroupsPage";
+import FriendsPage from './pages/friendsPage/FriendsPage';
 import Group from './pages/group/Group';
 import LeftBar from "./components/leftBar/LeftBar";
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
@@ -75,6 +76,10 @@ const router = createBrowserRouter([
       {
         path: "/groups",
         element: <GroupsPage />,
+      },
+      {
+        path: "/friends",
+        element: <FriendsPage />,
       },
       {
         path: "/group/:id",

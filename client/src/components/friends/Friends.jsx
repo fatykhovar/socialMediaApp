@@ -2,7 +2,7 @@ import { useState } from "react";
 import { makeRequest } from "../../axios";
 import { useQuery } from "react-query";
 import "./friends.css";
-import Friend from "../friend/Friend";
+import FriendCard from "../friendCard/FriendCard";
 import SearchOutlinedIcon from '@mui/icons-material/Search';
 import { useMutation, useQueryClient } from "react-query";
 import { useLocation } from "react-router-dom";
@@ -59,7 +59,7 @@ const Friends = ({ setOpenFriends, user }) => {
                 ? "Something went wrong!"
                 : rIsLoading
                 ? "loading"
-                :relationshipData.map((user) => <Friend user={user} key={user.id} />)}
+                :relationshipData.map((user) => <FriendCard user={user} key={user.id} />)}
         </div>
         <button className="close" onClick={() => setOpenFriends(false)}>
           Закрыть

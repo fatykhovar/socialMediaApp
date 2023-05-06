@@ -93,14 +93,18 @@ const Group = () => {
                         
                     </div> */}
                     </div>
-                    </div>
+                   </div>
                 </div>
                     <img
                      src={"/upload/" + data.groupprofilepic}
                     alt="" className="groupPic" />
             </div>
         </div>
-
+        {currentUser === data.userid ? (
+          <span></span>
+        ) : (
+          <span></span>
+        )}
         </>
       )}
     </div>
