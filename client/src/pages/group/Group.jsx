@@ -1,5 +1,5 @@
 import "./group.css";
-import Share from "../../components/share/Share";
+import groupShare from "../../components/groupShare/GroupShare";
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import { makeRequest } from "../../axios";
 import { useLocation } from "react-router-dom";
@@ -9,6 +9,7 @@ import Update from "../../components/update/Update";
 import { useState } from "react";
 import React  from 'react';
 import { Link } from "react-router-dom";
+import GroupShare from "../../components/groupShare/GroupShare";
 
 const Group = () => {
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -105,6 +106,7 @@ const Group = () => {
         ) : (
           <span></span>
         )}
+        <GroupShare/>
         </>
       )}
     </div>
