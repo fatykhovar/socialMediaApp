@@ -28,6 +28,21 @@ export const findGroup = (req, res) => {
   });
 };
 
+export const searchGroups = (req, res) => {
+  const key ='%'+ req.params.key+'%';
+  // const key =req.params.key;
+  console.log("groupsKey: ", key);
+  const q = "SELECT * FROM groups WHERE groupname LIKE $1"
+  
+  pool.query(q, [key],  (err, data) => {
+    console.log("searchGroups data: ", data.rows);
+    console.log("searchGroups err: ",err);
+    if (err) return res.status(500).json(err);
+    const { password, ...info } = data.rows;
+    return res.json(info);
+  });
+}
+
 export const addGroup = (req, res) => {
   const token = req.cookies.accessToken;
   console.log("addGroup req: ", req)

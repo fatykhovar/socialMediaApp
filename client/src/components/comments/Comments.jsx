@@ -4,6 +4,7 @@ import { AuthContext } from "../../context/authContext";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { makeRequest } from "../../axios";
 import moment from "moment";
+import 'moment/locale/ru'; 
 import React  from 'react';
 
 const Comments = ({ postId }) => {
@@ -60,7 +61,7 @@ const Comments = ({ postId }) => {
                 <p>{comment.description}</p>
               </div>
               <span className="date">
-                {moment(comment.createdAt).fromNow()}
+                {moment(comment.createdat).fromNow()}
               </span>
             </div>
           ))}

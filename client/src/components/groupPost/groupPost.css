@@ -1,0 +1,105 @@
+.groupPost {
+  -webkit-box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
+  box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
+  border-radius: 20px;
+  background-color: white;
+  color: #000;
+  width: 60%;
+  margin: 0 auto;
+}
+
+.groupPost .container {
+  padding: 20px;
+}
+
+.groupPost .container .user {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  position: relative;
+}
+
+.groupPost .container .user .userInfo {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 20px;
+}
+
+.groupPost .container .user .userInfo img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.groupPost .container .user .userInfo .details {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.groupPost .container .user .userInfo .details .name {
+  font-weight: 500;
+}
+
+.groupPost .container .user .userInfo .details .date {
+  font-size: 12px;
+}
+
+.groupPost .container .user button {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  border: none;
+  background-color: #f0544f;
+  padding: 5px;
+  cursor: pointer;
+  color: white;
+}
+
+.groupPost .container .content {
+  margin: 20px 0px;
+}
+
+.groupPost .container .content img {
+  width: 100%;
+  max-height: 500px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  margin-top: 20px;
+}
+
+.groupPost .container .info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 20px;
+}
+
+.groupPost .container .info .item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+

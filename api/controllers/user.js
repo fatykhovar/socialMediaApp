@@ -15,20 +15,36 @@ export const getUser = (req, res) => {
   });
 };
 
-export const searchUsers = (req, res) => {
+export const getUsers = (req, res) => {
   // const key = req.params.key;
   // console.log("key: ", key);
   // const q = "SELECT * FROM users WHERE name LIKE $1"
   const q = "SELECT * FROM users"
   
   pool.query(q, (err, data) => {
+    console.log("getUsers data: ", data.rows);
+    console.log("getUsers err: ",err);
+    if (err) return res.status(500).json(err);
+    const { password, ...info } = data.rows;
+    return res.json(info);
+  });
+};
+
+export const searchUsers = (req, res) => {
+  const key ='%'+ req.params.key+'%';
+  // const key =req.params.key;
+  console.log("usersKey: ", key);
+  const q = "SELECT * FROM users WHERE name LIKE $1"
+  
+  pool.query(q, [key],  (err, data) => {
     console.log("searchUsers data: ", data.rows);
     console.log("searchUsers err: ",err);
     if (err) return res.status(500).json(err);
     const { password, ...info } = data.rows;
     return res.json(info);
   });
-};
+}
+
 
 export const updateUser = (req, res) => {
   const token = req.cookies.accessToken;

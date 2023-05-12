@@ -105,23 +105,6 @@ const router = createBrowserRouter([
     <div>
       <RouterProvider router={router} />
     </div>
-    // <QueryClientProvider client={queryClient}>
-    // <>
-    //    <Navbar />
-    //   <Router>
-    //     <Routes>
-    //       <Route path="/" element={<Home />} />
-    //       <Route path="/register"  element={<Register />} />
-    //       {/* <LoggedInRoute> */}
-    //         <Route path="/login"  element={<Login />} />
-    //         {/* </LoggedInRoute> */}
-          
-    //       {/* <Route path="/upload" element={<Upload />} /> */}
-    //       <Route path="/profile" element={<Profile />} />
-    //     </Routes>
-    //  </Router> 
-    // </>
-    // </QueryClientProvider>
   );
 }
 

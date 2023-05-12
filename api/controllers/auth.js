@@ -38,11 +38,8 @@ export const register = (req, res) => {
     //  return  res.status(400).json("Invalid email!");
     if (!schema.validate(password)) 
       errors.push("Invalid password!");
-    // return res.status(400).json("Invalid password!");
-    // if (errors.length !== 0) return res.status(400).json(errors);
     if (!login || !password || !email || !name)
       errors.push("Empty inputs!");
-
     bcrypt.genSalt(saltRounds, function(err, salt) {
       bcrypt.hash(password, salt, function(err, hash) {
           pool.query(
@@ -56,11 +53,9 @@ export const register = (req, res) => {
             res.send(results);
           }
         );
-      });
-      
+      });  
   });
     console.log(login, password, email, name);
-    
   }
 
 export const login= (req, res) => {

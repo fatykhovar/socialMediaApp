@@ -14,7 +14,6 @@ const GroupCard = ({group}) => {
                 to={`/group/${group.id}`}
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-              {console.log("group: ", group)}
               <span className="name">{group.groupname}</span>
             </Link>
           </div>

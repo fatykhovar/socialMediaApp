@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import moment from "moment";
 
 export const getPosts = (req, res) => {
-  const userId = req.query.userId;
+  const groupId = req.query.groupId;
   const token = req.cookies.accessToken;
   if (!token) return res.status(401).json("Not logged in!");
   // console.log("getPosts req: ", req);
@@ -21,16 +21,16 @@ export const getPosts = (req, res) => {
     // ORDER BY p.createdAt DESC`;
 
     const q = 
-      userId !== "undefined"
-        ? "SELECT g_p.*, g.id AS group_id, name, groupprofilepic FROM group_posts AS g_p JOIN groups AS g ON (g.id = g_p.group_id) WHERE g_p.group_id = $1 ORDER BY g_p.created_at DESC"
-        :"SELECT g_p.*, g.id AS group_id, name, groupprofilepic FROM group_posts AS g_p JOIN groups AS g ON (g.id = g_p.group_id) ORDER BY g_p.created_at DESC"
+    groupId !== "undefined"
+        ? "SELECT g_p.*, g.id AS group_id, groupname, groupprofilepic FROM group_posts AS g_p JOIN groups AS g ON (g.id = g_p.group_id) WHERE g_p.group_id = $1 ORDER BY g_p.created_at DESC"
+        :"SELECT g_p.*, g.id AS group_id, groupname, groupprofilepic FROM group_posts AS g_p JOIN groups AS g ON (g.id = g_p.group_id) ORDER BY g_p.created_at DESC"
     const q1 = "SELECT * FROM posts"
     const values =
-      group_id !== "undefined" ? [userId] : [];
+    groupId !== "undefined" ? [groupId] : [];
 
     pool.query(q, values, (err, data) => {
-      // console.log("getPosts data: ", data);
-      // console.log("posts err: ", err);
+      console.log("getPosts data: ", data);
+      console.log("posts err: ", err);
       if (err) return res.status(500).json(err);
       return res.status(200).json(data);
     });
@@ -43,7 +43,7 @@ export const addPost = (req, res) => {
 
   jwt.verify(token, "secretkey", (err, userInfo) => {
     if (err) return res.status(403).json("Token is not valid!");
-    // console.log("addPost req: ", req.body);
+    console.log("addGroupPost req: ", req.body);
     const q =
       "INSERT INTO group_posts (description, image, created_at, group_id) VALUES ($1, $2, $3, $4)";
     pool.query(
@@ -53,11 +53,11 @@ export const addPost = (req, res) => {
         req.body.desc,
         req.body.img,
         moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
-        userInfo.id
+        req.body.groupId
       ], 
       (err, data) => {
-      // console.log("addpost data: ", data);
-      // console.log("addpost err: ", err);
+      console.log("addGroupPost data: ", data);
+      console.log("addGroupPost err: ", err);
 
       if (err) return res.status(500).json(err);
       return res.status(200).json("Post has been created.");

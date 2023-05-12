@@ -51,6 +51,16 @@ color: rgb(126, 126, 126);
     width: 70%;
 }
 
+.groupsPage .navbar button {
+    border: none;
+    background-color: #5271ff;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 200px;
+  }
+
 .groupsPage  .search input {
 border: none;
 width: 500px;

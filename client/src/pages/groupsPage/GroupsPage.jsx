@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { makeRequest } from "../../axios";
 import { useQuery } from "react-query";
 import "./groupsPage.css";
@@ -14,22 +14,52 @@ import GroupCard from "../../components/groupCard/GroupCard";
 const GroupsPage = ()=>{
   const [key, setKey] = useState("");
   const [createGroup, setCreateGroup] = useState(false);
-
-  // console.log("s err: ", key)
+  const [results, setResults] = useState([]);
 
   const { isLoading, error, data } = useQuery(["groups"], () =>
     makeRequest.get("/groups").then((res) => {
-        console.log("key req data: ", res.data)
-      //   let result = Object.values(res.data);
-      // const filteredData = result.filter(user => {
-      //     return user.name.includes(key)
-      //   })
-      // return filteredData;
-      console.log("groups: ", res.data)
+      console.log("groups: ", Object.values(res.data))
       return Object.values(res.data);
     })
   );
-  // console.log("s data: ", data);
+  
+  useEffect(() => {
+    if (key !== "") {
+      makeRequest.get("/groups/search/" + key).then((res) => {
+        console.log("searchGroups: ", res.data);
+        setResults(Object.values(res.data));
+      });
+    } else {
+      setResults([]);
+    }
+  }, [key]);
+  // const { isLoading: sIsLoading, error: sError,  data: sData } = useQuery(["searchGroups"], () =>
+  //     makeRequest.get("/groups/search/" + key).then((res) => {
+  //       console.log("searchGroups: ", Object.values(res.data))
+  //       return Object.values(res.data);
+  //     })
+  // );
+
+  // console.log("sdata: ", sData);
+
+  console.log("groupsKey: ", key)
+  const mutation = useMutation(
+    (key) => {
+      console.log("groupsKey: ", key)
+      return makeRequest.get("/groups/search/" + key).then((res) => {
+
+        console.log("searchGroups: ", res.data)
+        return Object.values(res.data);
+    });
+    },
+    {
+      onSuccess: () => {
+        // Invalidate and refetch
+        queryClient.invalidateQueries(["groupsSearch"]);
+      },
+    }
+  );
+
   
 	const queryClient = useQueryClient();
   const userId = parseInt(useLocation().pathname.split("/")[2]);
@@ -43,18 +73,25 @@ const GroupsPage = ()=>{
               <input type="text" placeholder="Поиск..."
               onChange={(e) => setKey(e.target.value)}
               />
+              {/* <button onClick={handleSearch(key)}>Найти</button> */}
           </div>
-          <div className="item">
-              <AddIcon onClick={() => setCreateGroup(true)}/>
-            <span>Создать сообщество</span>
-          </div>
+            <button  onClick={() => setCreateGroup(true)}>
+              Создать сообщество
+            </button>
         </div>
         <div className="scroller">
-            {error
+          {
+            key !== "" ? (
+              results.map((group) => <GroupCard  group={group}/>)
+            ) : (
+              error
                 ? "Something went wrong!"
                 : isLoading
                 ? "loading"
-                :data.map((group) => <GroupCard  group={group}/>)}
+                : data.map((group) => <GroupCard  group={group}/>)
+            )
+          }
+            
         </div>
       {createGroup && <CreateGroup setCreateGroup={setCreateGroup}/>}
     </div>

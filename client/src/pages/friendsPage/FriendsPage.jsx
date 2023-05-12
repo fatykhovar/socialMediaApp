@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState , useEffect } from "react";
 import { makeRequest } from "../../axios";
 import { useQuery } from "react-query";
 import "./friendsPage.css";
@@ -12,7 +12,7 @@ import FriendCard from "../../components/friendCard/FriendCard";
 
 const FriendsPage = ()=>{
   const [key, setKey] = useState("");
-
+  const [results, setResults] = useState([]);
   console.log("s err: ", key)
 
   const { isLoading, error, data } = useQuery(["user"], () =>
@@ -27,21 +27,31 @@ const FriendsPage = ()=>{
       // return Object.values(res.data);
     })
   );
-  console.log("s data: ", data);
+
+  useEffect(() => {
+    if (key !== "") {
+      makeRequest.get("/user/search/" + key).then((res) => {
+        console.log("searchUsers: ", res.data);
+        setResults(Object.values(res.data));
+      });
+    } else {
+      setResults([]);
+    }
+  }, [key]);
   
+
 	const queryClient = useQueryClient();
   const userId = parseInt(useLocation().pathname.split("/")[2]);
 
   
-  const { isLoading: rIsLoading, data: relationshipData } = useQuery(
-    ["relationshipFollowers"],
-    () =>
-      makeRequest.get("/relationships/followers?followerUserId=" + userId).then((res) => {
-        return res.data;
-      })
-  );
+  // const { isLoading: rIsLoading, data: relationshipData } = useQuery(
+  //   ["relationshipFollowers"],
+  //   () =>
+  //     makeRequest.get("/relationships/followers?followerUserId=" + userId).then((res) => {
+  //       return res.data;
+  //     })
+  // );
 
-  console.log("friends relData: ", relationshipData)
   return(
     <div className="friendsPage">
         <div className="navbar">
@@ -58,11 +68,18 @@ const FriendsPage = ()=>{
           </div> */}
         </div>
         <div className="scroller">
-            {error
+          {
+            key !== "" ? (
+              results.map((user) => <FriendCard  user={user}/>)
+            ) : (
+              error
                 ? "Something went wrong!"
                 : isLoading
                 ? "loading"
-                :data.map((user) => <FriendCard  user={user}/>)}
+                :data.map((user) => <FriendCard  user={user}/>)
+            )
+          }
+            
         </div>
     </div>
   );

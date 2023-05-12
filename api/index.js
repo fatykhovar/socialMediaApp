@@ -6,6 +6,8 @@ import likeRoutes from "./routes/likes.js";
 import groupRoutes from "./routes/groups.js"
 import relationshipRoutes from "./routes/relationships.js";
 import groupPostsRoutes from "./routes/groupPosts.js"
+// import groupCommentsRoutes from "./routes/groupComments.js"
+// import groupLikesRoutes from "./routes/groupLikes.js"
 import express from "express";
 import cors from "cors";
 import multer from "multer";
@@ -48,7 +50,8 @@ app.use("/api/likes", likeRoutes);
 app.use("/api/relationships", relationshipRoutes);
 app.use("/api/groups", groupRoutes);
 app.use("/api/groupPosts", groupPostsRoutes);
-
+// app.use("/api/groupComments", groupCommentRoutes);
+// app.use("/api/groupLikes", groupLikeRoutes);
 
 app.listen(3001, (req, res) => {
     console.log("Server running...");

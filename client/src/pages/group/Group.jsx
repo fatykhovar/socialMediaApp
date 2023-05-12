@@ -1,5 +1,4 @@
 import "./group.css";
-import groupShare from "../../components/groupShare/GroupShare";
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import { makeRequest } from "../../axios";
 import { useLocation } from "react-router-dom";
@@ -10,6 +9,7 @@ import { useState } from "react";
 import React  from 'react';
 import { Link } from "react-router-dom";
 import GroupShare from "../../components/groupShare/GroupShare";
+import GroupPosts from "../../components/groupPosts/GroupPosts";
 
 const Group = () => {
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -23,8 +23,8 @@ const Group = () => {
       return res.data;
     })
   );
-  console.log("Group data: ",data)
-  console.log("Group error: ",error)
+  // console.log("Group data: ",data)
+  // console.log("Group error: ",error)
 
   // const { isLoading: rIsLoading, data: relationshipData } = useQuery(
   //   ["relationship"],
@@ -107,6 +107,7 @@ const Group = () => {
           <span></span>
         )}
         <GroupShare/>
+        <GroupPosts groupId={groupId}/>
         </>
       )}
     </div>
