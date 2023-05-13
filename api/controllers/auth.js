@@ -30,12 +30,9 @@ function checkLogin(login) {
   return new Promise(function(resolve, reject) {
     pool.query("SELECT COUNT(*) FROM users WHERE login = $1", [login],
      (err, results) => {
-          if (results.rowCount > 0){
+          if (results.rows[0].count !== '0'){
             resolve("Login duplicate!");
           }
-          else
-            resolve("");
-
           console.log("err login: ", err);
           console.log("res login: ", results);
         });
@@ -48,11 +45,9 @@ function checkEmail(email) {
       "SELECT COUNT(*) FROM users WHERE email = $1",
       [email],
       (err, results) => {
-        if (results.rowCount > 0){
+        if (results.rows[0].count !== '0'){
           resolve("Email duplicate!");
         }
-        else
-          resolve("");
         console.log("err email: ", err);
         console.log("res email: ", results);
       }
@@ -85,27 +80,38 @@ export async function register (req, res) {
     }
     if (!schema.validate(password)) 
       errors.push("Invalid password!");
+    // try{
+    //   const loginExists = await checkLogin(login);
+    // errors.push(loginExists);
+    // }catch (err){
+    //   console.log(err);
+    //   return ;
+    // }
+    
+    // try{
+    //   const emailExists = await checkEmail(email);
+    // errors.push(emailExists);
+    // }catch(err){
+    //   console.log(err);
+    //   return ;
 
-    const loginExists = await checkLogin(login);
-    errors.push(loginExists);
-
-    const emailExists = await checkEmail(email);
-    errors.push(emailExists);
-
+    // }
     if (errors.length !== 0) {
-      // console.log("errors: ", errors);
+      console.log("errors: ", errors);
       return res.status(400).json(errors);
     }
     else{
       bcrypt.genSalt(saltRounds, function(err, salt) {
       bcrypt.hash(password, salt, function(err, hash){
           pool.query(
-          "INSERT INTO users (login, password, email, name) VALUES ($1, $2, $3, $4)",
+          "INSERT INTO users (login, password, email, name) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING",
           [login, hash, email, name],
           (err, results) => {
+            console.log(results);
             console.log(err);
             console.log("errors reg: ", errors);
-            if (errors.length !== 0) {
+            if (results.rowCount == 0) {
+              errors.push("Duplicate!")
               return res.status(400).json(errors);
             }
             res.send(results);
@@ -128,7 +134,7 @@ export const login= (req, res) => {
 
   if (!login || !password) return res.status(400).json("Invalid login or password!");
   pool.query(q, [login], (err, data) => {
-    console.log(data.rows[0].password);
+    // console.log(data.rows[0].password);
     console.log(req.body.password);
     console.log(data.rowCount);
     console.log(err);

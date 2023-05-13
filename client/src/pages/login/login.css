@@ -50,10 +50,15 @@
 .login .card .right .error{
   color: #ea0000;
   font-size: medium;
+  height: 5px;
+  margin-left: 5px;
+  margin-bottom: 5px;
 }
 
 .login .card .left span {
   font-size: 14px;
+  margin-bottom: 40px;
+
 }
 
 .login .card .left button {

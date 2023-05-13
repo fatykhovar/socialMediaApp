@@ -22,8 +22,8 @@ export const getUsers = (req, res) => {
   const q = "SELECT * FROM users"
   
   pool.query(q, (err, data) => {
-    console.log("getUsers data: ", data.rows);
-    console.log("getUsers err: ",err);
+    // console.log("getUsers data: ", data.rows);
+    // console.log("getUsers err: ",err);
     if (err) return res.status(500).json(err);
     const { password, ...info } = data.rows;
     return res.json(info);

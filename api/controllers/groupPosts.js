@@ -29,8 +29,8 @@ export const getPosts = (req, res) => {
     groupId !== "undefined" ? [groupId] : [];
 
     pool.query(q, values, (err, data) => {
-      console.log("getPosts data: ", data);
-      console.log("posts err: ", err);
+      // console.log("getPosts data: ", data);
+      // console.log("posts err: ", err);
       if (err) return res.status(500).json(err);
       return res.status(200).json(data);
     });
@@ -56,8 +56,8 @@ export const addPost = (req, res) => {
         req.body.groupId
       ], 
       (err, data) => {
-      console.log("addGroupPost data: ", data);
-      console.log("addGroupPost err: ", err);
+      // console.log("addGroupPost data: ", data);
+      // console.log("addGroupPost err: ", err);
 
       if (err) return res.status(500).json(err);
       return res.status(200).json("Post has been created.");
@@ -76,6 +76,8 @@ export const deletePost = (req, res) => {
 
     pool.query(q, [req.params.id, userInfo.id], (err, data) => {
       console.log("delpost err: ", err);
+      console.log("delpost data: ", data);
+
       if (err) return res.status(500).json(err);
       if (data.affectedRows > 0)
         return res.status(200).json("Post has been deleted.");

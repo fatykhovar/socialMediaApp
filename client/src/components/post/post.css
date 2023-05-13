@@ -8,6 +8,11 @@
   margin: 0 auto;
 }
 
+.post .deleted{
+  padding: 20px;
+  text-align: center;
+}
+
 .post .container {
   padding: 20px;
 }

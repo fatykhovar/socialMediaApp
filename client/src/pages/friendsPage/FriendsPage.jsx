@@ -1,4 +1,4 @@
-import { useState , useEffect } from "react";
+import { useContext, useState , useEffect } from "react";
 import { makeRequest } from "../../axios";
 import { useQuery } from "react-query";
 import "./friendsPage.css";
@@ -7,13 +7,15 @@ import AddIcon from '@mui/icons-material/Add';
 import { useMutation, useQueryClient } from "react-query";
 import { useLocation } from "react-router-dom";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { AuthContext } from "../../context/authContext";
+
 import React  from 'react'; 
 import FriendCard from "../../components/friendCard/FriendCard";
 
 const FriendsPage = ()=>{
   const [key, setKey] = useState("");
   const [results, setResults] = useState([]);
-  console.log("s err: ", key)
+  const { currentUser } = useContext(AuthContext);
 
   const { isLoading, error, data } = useQuery(["user"], () =>
     makeRequest.get("/user").then((res) => {
@@ -28,10 +30,20 @@ const FriendsPage = ()=>{
     })
   );
 
+  // const { isLoading: rIsLoading, data: relationshipData } = useQuery(
+  //   ["relationship"],
+  //   () =>
+  //     makeRequest.get("/relationships?followedUserId=" + currentUser.id).then((res) => {
+  //       return res.data;
+  //     })
+  // );
+
+  // console.log("reData: ", relationshipData);
+
   useEffect(() => {
     if (key !== "") {
       makeRequest.get("/user/search/" + key).then((res) => {
-        console.log("searchUsers: ", res.data);
+        // console.log("searchUsers: ", res.data);
         setResults(Object.values(res.data));
       });
     } else {
@@ -43,14 +55,7 @@ const FriendsPage = ()=>{
 	const queryClient = useQueryClient();
   const userId = parseInt(useLocation().pathname.split("/")[2]);
 
-  
-  // const { isLoading: rIsLoading, data: relationshipData } = useQuery(
-  //   ["relationshipFollowers"],
-  //   () =>
-  //     makeRequest.get("/relationships/followers?followerUserId=" + userId).then((res) => {
-  //       return res.data;
-  //     })
-  // );
+
 
   return(
     <div className="friendsPage">
@@ -76,7 +81,7 @@ const FriendsPage = ()=>{
                 ? "Something went wrong!"
                 : isLoading
                 ? "loading"
-                :data.map((user) => <FriendCard  user={user}/>)
+                : data.map((user) => <FriendCard  user={user}/>)
             )
           }
             

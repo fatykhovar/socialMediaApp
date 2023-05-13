@@ -70,7 +70,7 @@ const Login = () => {
                 <span>Неверный логин или пароль.</span>
               </div>
             ) : (
-              <></>
+              <div className="error"></div>
             )
             }
             <button onClick={handleLogin}>Войти</button>

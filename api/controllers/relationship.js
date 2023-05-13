@@ -2,7 +2,7 @@ import {pool } from "../pool.js";
 import jwt from "jsonwebtoken";
 
 export const getRelationships = (req,res)=>{
-    const q = "SELECT followerUserId FROM relationships WHERE followedUserId = $1";
+    const q = "SELECT * FROM users AS u JOIN relationships AS r ON (u.id = r.followerUserId) WHERE r.followedUserId = $1";
 
    pool.query(q, [req.query.followedUserId], (err, data) => {
     // console.log("rel err: ", err);
@@ -12,13 +12,13 @@ export const getRelationships = (req,res)=>{
     });
 }
 export const getFollowers = (req,res)=>{
-  const q = "SELECT * FROM relationships AS r JOIN users AS u ON (u.id = r.followedUserId) WHERE r.followerUserId = $1";
+  const q = "SELECT followerUserId FROM relationships WHERE followedUserId = $1";
 
- pool.query(q, [req.query.followerUserId], (err, data) => {
-  // console.log("followers err: ", err);
-  // console.log("followers data: ", data);
+ pool.query(q, [req.query.followedUserId], (err, data) => {
+  console.log("followers err: ", err);
+  console.log("followers data: ", data.rows);
     if (err) return res.status(500).json(err);
-    return res.status(200).json(data.rows);
+    return res.status(200).json(data.rows.map(relationship=>relationship.followeruserid));
   });
 }
 
