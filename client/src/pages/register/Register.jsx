@@ -10,6 +10,8 @@ const Register = () => {
     email: "",
     password: "",
     name: "",
+    // profilepic: "blank_profile.jpg",
+    // coverpi: "blank_cover.jpg"
   });
   const [err, setErr] = useState(null);
 
@@ -28,7 +30,7 @@ const Register = () => {
       setErr(err.response.data);
     }
   };
-
+  console.log("reg err: ", err)
   return (
     <div className="register">
       <div className="card">
@@ -51,18 +53,39 @@ const Register = () => {
               name="login"
               onChange={handleChange}
             />
+            {Array.isArray(err) && err.includes("Empty login!") ? (
+              <div className="error">
+                <span>Введите логин.</span>
+              </div>
+            ) : Array.isArray(err) && err.includes("Login duplicate!") ? (
+                <div className="error">
+                  <span>Такой логин уже существует.</span>
+                </div>
+            ) : (
+              <div className="error">
+              </div>
+            )
+            }
             <input
               type="email"
               placeholder="Эл. почта"
               name="email"
               onChange={handleChange}
             />
-            {Array.isArray(err) && err.includes("Invalid email!") ? (
+            {Array.isArray(err) && err.includes("Empty email!") ? (
+              <div className="error">
+                <span>Введите эл. почту.</span>
+              </div>
+            ) : Array.isArray(err) && err.includes("Invalid email!") ? (
               <div className="error">
                 <span>Неправильный адрес эл. почты.</span>
               </div>
-            ) : (
-              <></>
+            ) : Array.isArray(err) && err.includes("Email duplicate!") ? (
+              <div className="error">
+                  <span>Такая эл. почта уже существует.</span>
+              </div>
+            ):(
+              <div className="error"></div>
             )
             }
             <input
@@ -71,12 +94,16 @@ const Register = () => {
               name="password"
               onChange={handleChange}
             />
-            {Array.isArray(err) && err.includes('Invalid password!') ? (
+            {Array.isArray(err) && err.includes('Empty password!') ? (
+              <div className="error">
+                <span>Введите пароль.</span>
+              </div>
+            ) : Array.isArray(err) && err.includes('Invalid password!') ? (
               <div className="error">
                 <span>Пароль должен состоять не менее, чем из 8 символов, включать в себя цифры и не менее 2 заглавных букв.</span>
               </div>
             ) : (
-              <></>
+              <div className="error"></div>
             )
             }
             <input
@@ -85,20 +112,20 @@ const Register = () => {
               name="name"
               onChange={handleChange}
             />
-            {Array.isArray(err) && err.includes('Duplicate!') ? (
+            {Array.isArray(err) && err.includes('Empty name!') ? (
               <div className="error">
-                <span>Такой логин или эл. почта уде существуют.</span>
+                <span>Введите имя.</span>
               </div>
             ) : (
-              <></>
+              <div className="error"></div>
             )
             }
-            {Array.isArray(err) && err.includes('Empty inputs!') ? (
+            {Array.isArray(err) && err.includes('Duplicate!') ? (
               <div className="error">
-                <span>Заполните пустые поля.</span>
+                <span>Такой логин или эл. почта уже существуют.</span>
               </div>
             ) : (
-              <></>
+              <div className="error"></div>
             )
             }
             <button onClick={handleClick}>Зарегистрировться</button>

@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "../done_social_app"
+		},
+		{
+			"path": "."
+		},
+		{
+			"path": "../socialapp"
+		}
+	],
+	"settings": {
+		"editor.tabSize": 2,
+		"editor.tabFocusMode": true
+	}
+}

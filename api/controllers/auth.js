@@ -25,37 +25,97 @@ schema
 // .is().not().oneOf(['Passw0rd', 'Password123']); // Blacklist these values
 
 
-export const register = (req, res) => {
+
+function checkLogin(login) {
+  return new Promise(function(resolve, reject) {
+    pool.query("SELECT COUNT(*) FROM users WHERE login = $1", [login],
+     (err, results) => {
+          if (results.rowCount > 0){
+            resolve("Login duplicate!");
+          }
+          else
+            resolve("");
+
+          console.log("err login: ", err);
+          console.log("res login: ", results);
+        });
+  })
+}
+
+function checkEmail(email) {
+  return new Promise(function(resolve, reject) {
+    pool.query(
+      "SELECT COUNT(*) FROM users WHERE email = $1",
+      [email],
+      (err, results) => {
+        if (results.rowCount > 0){
+          resolve("Email duplicate!");
+        }
+        else
+          resolve("");
+        console.log("err email: ", err);
+        console.log("res email: ", results);
+      }
+    );
+  })
+}
+
+
+export async function register (req, res) {
     const login = req.body.login;
     const password = req.body.password;
     const email = req.body.email;
     const name = req.body.name;
-    var errors = []; 
-  
+    const profilepic = req.body.profilepic;
+    const coverpic = req.body.coverpic;
+    const errors = []; 
+
     console.log("password val: ", schema.validate(password));
-    if (!isEmail(email))
+    if (!login)
+      errors.push("Empty login!");
+    if (!password)
+      errors.push("Empty password!");
+    if (!email)
+      errors.push("Empty email!");
+    if (!name)
+      errors.push("Empty name!");
+    // if (errors.length !== 0) return res.status(400).json(errors);
+    if (!isEmail(email)){
       errors.push("Invalid email!");
-    //  return  res.status(400).json("Invalid email!");
+    }
     if (!schema.validate(password)) 
       errors.push("Invalid password!");
-    if (!login || !password || !email || !name)
-      errors.push("Empty inputs!");
-    bcrypt.genSalt(saltRounds, function(err, salt) {
-      bcrypt.hash(password, salt, function(err, hash) {
+
+    const loginExists = await checkLogin(login);
+    errors.push(loginExists);
+
+    const emailExists = await checkEmail(email);
+    errors.push(emailExists);
+
+    if (errors.length !== 0) {
+      // console.log("errors: ", errors);
+      return res.status(400).json(errors);
+    }
+    else{
+      bcrypt.genSalt(saltRounds, function(err, salt) {
+      bcrypt.hash(password, salt, function(err, hash){
           pool.query(
           "INSERT INTO users (login, password, email, name) VALUES ($1, $2, $3, $4)",
           [login, hash, email, name],
           (err, results) => {
-            if (err && err.code === "23505") errors.push("Duplicate!")
             console.log(err);
             console.log("errors reg: ", errors);
-            if (errors.length !== 0) return res.status(400).json(errors);
+            if (errors.length !== 0) {
+              return res.status(400).json(errors);
+            }
             res.send(results);
           }
         );
       });  
-  });
-    console.log(login, password, email, name);
+    });
+    }
+    
+    // console.log(login, password, email, name);
   }
 
 export const login= (req, res) => {
