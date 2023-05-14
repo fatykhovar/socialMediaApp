@@ -90,7 +90,7 @@ const GroupPost = ({ post }) => {
         </div>
         <div className="content">
           <p>{post.description}</p>
-          {/* <img src={"/upload/" + post.image} alt="" /> */}
+          <img src={"/upload/" + post.image} alt="" />
         </div>
         <div className="info">
           <div className="item">
@@ -115,7 +115,7 @@ const GroupPost = ({ post }) => {
             Поделиться
           </div>
         </div>
-        {/* {commentOpen && <Comments postId={post.id} />} */}
+        {commentOpen && <Comments postId={post.id} isGroup={true} />}
       </div>
     </div>
   );

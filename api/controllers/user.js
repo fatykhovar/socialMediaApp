@@ -31,16 +31,20 @@ export const getUsers = (req, res) => {
 };
 
 export const searchUsers = (req, res) => {
-  const key ='%'+ req.params.key+'%';
+  const key ='%'+ req.query.key+'%';
   // const key =req.params.key;
   console.log("usersKey: ", key);
-  const q = "SELECT * FROM users WHERE name LIKE $1"
+  const q = `SELECT u.* FROM users AS u LEFT JOIN relationships AS r ON (u.id = r.followedUserId) WHERE u.name LIKE $1 
+  ORDER BY CASE 
+    WHEN r.followerUserId = $2 THEN 1
+    ELSE 0
+    END DESC`
   
-  pool.query(q, [key],  (err, data) => {
+  pool.query(q, [key, req.query.follower],  (err, data) => {
     console.log("searchUsers data: ", data.rows);
     console.log("searchUsers err: ",err);
     if (err) return res.status(500).json(err);
-    const { password, ...info } = data.rows;
+    const { ...info } = data.rows;
     return res.json(info);
   });
 }

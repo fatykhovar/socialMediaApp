@@ -1,20 +1,21 @@
-import { useState, useEffect } from "react";
+import { useContext, useState , useEffect } from "react";
 import { makeRequest } from "../../axios";
 import { useQuery } from "react-query";
 import "./groupsPage.css";
 import SearchOutlinedIcon from '@mui/icons-material/Search';
-import AddIcon from '@mui/icons-material/Add';
 import { useMutation, useQueryClient } from "react-query";
 import { useLocation } from "react-router-dom";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import React  from 'react'; 
 import CreateGroup from "../../components/createGroup/CreateGroup";
 import GroupCard from "../../components/groupCard/GroupCard";
+import { AuthContext } from "../../context/authContext";
+
 
 const GroupsPage = ()=>{
   const [key, setKey] = useState("");
   const [createGroup, setCreateGroup] = useState(false);
   const [results, setResults] = useState([]);
+  const { currentUser } = useContext(AuthContext);
 
   const { isLoading, error, data } = useQuery(["groups"], () =>
     makeRequest.get("/groups").then((res) => {
@@ -23,9 +24,18 @@ const GroupsPage = ()=>{
     })
   );
   
+  
+  const { isLoading: rIsLoading, error: rError, data: relationshipData } = useQuery(
+    ["groupRelationship"],
+    () =>
+      makeRequest.get("/groupRelationships?follower=" + currentUser.id).then((res) => {
+      return Object.values(res.data);
+      })
+  );
+
   useEffect(() => {
     if (key !== "") {
-      makeRequest.get("/groups/search/" + key).then((res) => {
+      makeRequest.get(`/groups/search?key=${key}&follower=${currentUser.id}`).then((res) => {
         console.log("searchGroups: ", res.data);
         setResults(Object.values(res.data));
       });
@@ -41,24 +51,6 @@ const GroupsPage = ()=>{
   // );
 
   // console.log("sdata: ", sData);
-
-  console.log("groupsKey: ", key)
-  const mutation = useMutation(
-    (key) => {
-      console.log("groupsKey: ", key)
-      return makeRequest.get("/groups/search/" + key).then((res) => {
-
-        console.log("searchGroups: ", res.data)
-        return Object.values(res.data);
-    });
-    },
-    {
-      onSuccess: () => {
-        // Invalidate and refetch
-        queryClient.invalidateQueries(["groupsSearch"]);
-      },
-    }
-  );
 
   
 	const queryClient = useQueryClient();
@@ -84,11 +76,15 @@ const GroupsPage = ()=>{
             key !== "" ? (
               results.map((group) => <GroupCard  group={group}/>)
             ) : (
-              error
-                ? "Something went wrong!"
-                : isLoading
-                ? "loading"
-                : data.map((group) => <GroupCard  group={group}/>)
+              // error
+              //   ? "Something went wrong!"
+              //   : isLoading
+              //   ? "loading"
+              //   : data.map((group) => <GroupCard  group={group}/>),
+                rError ? "Something went wrong!"
+                : rIsLoading
+                ? "loading" 
+                : relationshipData.map((group) => <GroupCard  group={group}/>)
             )
           }
             

@@ -27,7 +27,6 @@ export const addLike = (req, res) => {
     console.log("addLike err: ", err);
     if (err) return res.status(403).json("Token is not valid!");
     let q = "";
-
     if (req.query.isGroup)
       q = "INSERT INTO group_likes (user_id, group_post_id) VALUES ($1, $2)";
     else

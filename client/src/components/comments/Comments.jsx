@@ -7,12 +7,12 @@ import moment from "moment";
 import 'moment/locale/ru'; 
 import React  from 'react';
 
-const Comments = ({ postId }) => {
+const Comments = ({ postId, isGroup }) => {
   const [desc, setDesc] = useState("");
   const { currentUser } = useContext(AuthContext);
 
-  const { isLoading, error, data } = useQuery(["comments"], () =>
-    makeRequest.get("/comments?postId=" + postId).then((res) => {
+  const { isLoading, error, data } = useQuery(["comments",{postId, isGroup} ], () =>
+    makeRequest.get(`/comments?postId=${postId}&isGroup=${isGroup}`).then((res) => {
       return res.data.rows;
     })
   );
@@ -21,7 +21,7 @@ const Comments = ({ postId }) => {
 
   const mutation = useMutation(
     (newComment) => {
-      return makeRequest.post("/comments", newComment);
+      return makeRequest.post(`/comments?isGroup=${isGroup}`, newComment);
     },
     {
       onSuccess: () => {

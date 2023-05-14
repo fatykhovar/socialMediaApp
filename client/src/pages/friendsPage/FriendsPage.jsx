@@ -3,10 +3,8 @@ import { makeRequest } from "../../axios";
 import { useQuery } from "react-query";
 import "./friendsPage.css";
 import SearchOutlinedIcon from '@mui/icons-material/Search';
-import AddIcon from '@mui/icons-material/Add';
 import { useMutation, useQueryClient } from "react-query";
 import { useLocation } from "react-router-dom";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { AuthContext } from "../../context/authContext";
 
 import React  from 'react'; 
@@ -19,30 +17,34 @@ const FriendsPage = ()=>{
 
   const { isLoading, error, data } = useQuery(["user"], () =>
     makeRequest.get("/user").then((res) => {
-        console.log("key req data: ", res.data)
-        let result = Object.values(res.data);
-      const filteredData = result.filter(user => {
-          return user.name.includes(key)
-        })
-      console.log("filtredData: ", filteredData)
-      return filteredData;
-      // return Object.values(res.data);
+      return Object.values(res.data);
     })
   );
 
-  // const { isLoading: rIsLoading, data: relationshipData } = useQuery(
-  //   ["relationship"],
-  //   () =>
-  //     makeRequest.get("/relationships?followedUserId=" + currentUser.id).then((res) => {
-  //       return res.data;
-  //     })
-  // );
+  console.log("Data: ", data);
 
-  // console.log("reData: ", relationshipData);
+
+  const { isLoading: rIsLoading, error: rError, data: relationshipData } = useQuery(
+    ["relationship"],
+    () =>
+      makeRequest.get("/relationships?followerUserId=" + currentUser.id).then((res) => {
+      return Object.values(res.data);
+      })
+  );
+
+  console.log("reData: ", relationshipData);
+
+  const { isLoading: notFolIsLoading, error: notFolError,  data: notFolData } = useQuery(
+    ["relationship"],
+    () =>
+      makeRequest.get("/relationships/notFollowers?followerUserId=" + currentUser.id).then((res) => {
+        return res.data;
+      })
+  );
 
   useEffect(() => {
     if (key !== "") {
-      makeRequest.get("/user/search/" + key).then((res) => {
+      makeRequest.get(`/user/search?key=${key}&follower=${currentUser.id}`).then((res) => {
         // console.log("searchUsers: ", res.data);
         setResults(Object.values(res.data));
       });
@@ -77,11 +79,17 @@ const FriendsPage = ()=>{
             key !== "" ? (
               results.map((user) => <FriendCard  user={user}/>)
             ) : (
-              error
-                ? "Something went wrong!"
-                : isLoading
-                ? "loading"
-                : data.map((user) => <FriendCard  user={user}/>)
+              // error
+              //   ? "Something went wrong!"
+              //   : isLoading
+              //   ? "loading"
+              //   : data.map((user) => <FriendCard  user={user}/>),
+              "loading",
+                rError ? "Something went wrong!"
+                : rIsLoading
+                ? "loading" 
+                : relationshipData.map((user) => <FriendCard  user={user}/>)
+                
             )
           }
             

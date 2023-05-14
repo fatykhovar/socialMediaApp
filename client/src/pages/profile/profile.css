@@ -157,6 +157,15 @@
   cursor: pointer;
 }
 
+.profile .profileContainer .uInfo .center .followed {
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;;
+  background-color: #9197ae;
+}
+
  .profile .profileContainer .uInfo .right {
   -webkit-box-flex: 1;
       -ms-flex: 1;

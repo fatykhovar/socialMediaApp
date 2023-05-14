@@ -4,7 +4,7 @@ import {getGroups, addGroup, findGroup, searchGroups} from "../controllers/group
 const router = express.Router();
 
 router.get("/find/:groupId", findGroup);
-router.get("/search/:key", searchGroups);
+router.get("/search", searchGroups);
 router.get("/", getGroups);
 router.post("/", addGroup);
 // router.delete("/:id", deleteGroup);

@@ -1,13 +1,5 @@
 import "./profile.css";
-import FacebookTwoToneIcon from "@mui/icons-material/FacebookTwoTone";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import PinterestIcon from "@mui/icons-material/Pinterest";
-import TwitterIcon from "@mui/icons-material/Twitter";
 import PlaceIcon from "@mui/icons-material/Place";
-import LanguageIcon from "@mui/icons-material/Language";
-import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import GroupIcon from '@mui/icons-material/Group';
 import Posts from "../../components/posts/Posts";
 import Friends from "../../components/friends/Friends";
@@ -38,8 +30,16 @@ const Profile = () => {
   const { isLoading: rIsLoading, data: relationshipData } = useQuery(
     ["relationship"],
     () =>
-      makeRequest.get("/relationships?followedUserId=" + userId).then((res) => {
+      makeRequest.get("/relationships/followers?followedUserId=" + userId).then((res) => {
         return res.data;
+      })
+  );
+
+  const { isLoading: fIsLoading, data: fData } = useQuery(
+    ["relationship", userId],
+    () =>
+      makeRequest.get("/relationships/followers?followedUserId=" + userId).then((res) => {
+      return res.data;
       })
   );
   console.log("relData: ", relationshipData)
@@ -80,10 +80,10 @@ const Profile = () => {
           <div className="profileContainer">
             <div className="uInfo">
               <div className="left">
-                <div className="item">
+                {/* <div className="item">
                     <PlaceIcon />
                     <span>{data.city}</span>
-                  </div>
+                  </div> */}
               </div>
               <div className="center">
                 <span>{data.name}</span>
@@ -98,18 +98,18 @@ const Profile = () => {
                   {/* <button onClick={() => setOpenUpdate(true)}>Редактировать</button> */}
                   {rIsLoading ? (
                   "loading"
-                ) : userId === currentUser.id ? (
-                  <button onClick={() => setOpenUpdate(true)}>Редактировать</button>
-                ) : (
-                  <button onClick={handleFollow}>
-                    {relationshipData.includes(currentUser.id)
-                      ? "Вы подписаны"
-                      : "Подписаться"}
-                  </button>
-                )}
+                    ) : userId === currentUser.id ? (
+                      <button onClick={() => setOpenUpdate(true)}>Редактировать</button>
+                    ) : (
+                        relationshipData.includes(currentUser.id) ? (
+                          <button className="followed" onClick={handleFollow}>У вас в друзьях</button>
+                            ) : (
+                          <button onClick={handleFollow}>Добавить в друзья</button>)
+                    )
+                  }
               </div>
               <div className="right">
-                <GroupIcon onClick={() => setOpenFriends(true)}/>
+                {/* <GroupIcon onClick={() => setOpenFriends(true)}/> */}
               </div>
             </div>
           </div>

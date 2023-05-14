@@ -1,40 +1,42 @@
 import {pool } from "../pool.js";
 import jwt from "jsonwebtoken";
 
-export const getRelationships = (req,res)=>{
-    const q = `SELECT u.* FROM users AS u LEFT JOIN relationships AS r ON (u.id = r.followedUserId) 
+export const getGroupRelationships = (req,res)=>{
+    const q = `SELECT g.* FROM groups AS g LEFT JOIN group_relationships AS g_r ON (g.id = g_r.group_id) 
     ORDER BY CASE 
-    WHEN r.followerUserId = $1 THEN 1
+    WHEN g_r.follower_id = $1 THEN 1
     ELSE 0
     END DESC`;
 
-   pool.query(q, [req.query.followerUserId], (err, data) => {
-    // console.log("rel err: ", err);
-    // console.log("rel data: ", data);
+   pool.query(q, [req.query.follower], (err, data) => {
+    console.log("group rel err: ", err);
+    console.log("group rel data: ", data);
       // if (err) return res.status(500).json(err);
       // return res.status(200).json(data.rows);
       if (err) return res.status(500).json(err);
-      const {followeruserid, followeduserid, ...info } = data.rows;
+      const { ...info } = data.rows;
       return res.json(info);
     });
 }
-export const getFollowers = (req,res)=>{
-  const q = "SELECT followerUserId FROM relationships WHERE followedUserId = $1";
+export const getGroupFollowers = (req,res)=>{
+    const q = "SELECT follower_id FROM group_relationships WHERE group_id = $1";
 
-  pool.query(q, [req.query.followedUserId], (err, data) => {
-  // console.log("followers err: ", err);
-  // console.log("followers data: ", data.rows);
-    if (err) return res.status(500).json(err);
-    return res.status(200).json(data.rows.map(relationship=>relationship.followeruserid));
-  });
+    pool.query(q, [req.query.groupId], (err, data) => {
+     console.log("group rel err: ", err);
+     console.log("group rel data: ", data.rows);
+       // if (err) return res.status(500).json(err);
+       // return res.status(200).json(data.rows);
+       if (err) return res.status(500).json(err);
+       return res.status(200).json(data.rows.map(relationship=>relationship.follower_id));
+     });
 }
 
-export const getNotFollowers = (req,res)=>{
+export const getGroupNotFollowers = (req,res)=>{
   const q = "SELECT * FROM users AS u JOIN relationships AS r ON (u.id != r.followedUserId) WHERE r.followerUserId = $1 ORDER BY u.name";
 
    pool.query(q, [req.query.followerUserId], (err, data) => {
-    // console.log("rel err: ", err);
-    // console.log("rel data: ", data);
+    console.log("rel err: ", err);
+    console.log("rel data: ", data);
       // if (err) return res.status(500).json(err);
       // return res.status(200).json(data.rows);
       if (err) return res.status(500).json(err);
@@ -43,27 +45,29 @@ export const getNotFollowers = (req,res)=>{
     });
 }
 
-export const addRelationship = (req, res) => {
+export const addGroupRelationship = (req, res) => {
   const token = req.cookies.accessToken;
   if (!token) return res.status(401).json("Not logged in!");
 
   jwt.verify(token, "secretkey", (err, userInfo) => {
     if (err) return res.status(403).json("Token is not valid!");
 
-    const q = "INSERT INTO relationships (followerUserId,followedUserId) VALUES ($1, $2)";
+    const q = "INSERT INTO group_relationships (follower_id,group_id) VALUES ($1, $2)";
     const values = [
       userInfo.id,
-      req.body.userId
+      req.body.groupId
     ];
 
    pool.query(q, values, (err, data) => {
+    console.log("group add rel err: ", err);
+    console.log("group add rel data: ", data);
       if (err) return res.status(500).json(err);
       return res.status(200).json("Following");
     });
   });
 };
 
-export const deleteRelationship = (req, res) => {
+export const deleteGroupRelationship = (req, res) => {
 
   const token = req.cookies.accessToken;
   if (!token) return res.status(401).json("Not logged in!");
@@ -71,9 +75,9 @@ export const deleteRelationship = (req, res) => {
   jwt.verify(token, "secretkey", (err, userInfo) => {
     if (err) return res.status(403).json("Token is not valid!");
 
-    const q = "DELETE FROM relationships WHERE followerUserId = $1 AND followedUserId = $2";
+    const q = "DELETE FROM group_relationships WHERE follower_id= $1 AND group_id = $2";
 
-   pool.query(q, [userInfo.id, req.query.userId], (err, data) => {
+   pool.query(q, [userInfo.id, req.query.groupId], (err, data) => {
       if (err) return res.status(500).json(err);
       return res.status(200).json("Unfollow");
     });

@@ -87,6 +87,28 @@
   margin-bottom: 20px;
 }
 
+.group .groupContainer .uInfo .bottom {
+  margin-top: 10px;
+}
+
+.group .groupContainer .uInfo .bottom button {
+  border: none;
+  background-color: #5271ff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.group .groupContainer .uInfo .bottom .followed {
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;;
+  background-color: #9197ae;
+}
+
 @media (max-width: 480px) {
    .group .groupContainer .uInfo {
     -webkit-box-orient: vertical;
@@ -134,7 +156,7 @@
   -webkit-box-align: left;
       -ms-flex-align: left;
           align-items: left;
-  gap: 10px;
+  gap: 20px;
 }
 
  .group .groupContainer .uInfo .center span {
@@ -167,6 +189,7 @@
           align-items: center;
   gap: 5px;
   color: #555;
+  margin-bottom: 10px;
 }
 
 .group .groupContainer .uInfo .center .info img {

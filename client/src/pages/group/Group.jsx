@@ -23,37 +23,32 @@ const Group = () => {
       return res.data;
     })
   );
-  // console.log("Group data: ",data)
-  // console.log("Group error: ",error)
 
-  // const { isLoading: rIsLoading, data: relationshipData } = useQuery(
-  //   ["relationship"],
-  //   () =>
-  //     makeRequest.get("/relationships?followedUserId=" + userId).then((res) => {
-  //       return res.data;
-  //     })
-  // );
-  // console.log("relData: ", relationshipData)
-  // const queryClient = useQueryClient();
+  const { isLoading: fIsLoading, data: fData } = useQuery(
+    ["relationship", groupId],
+    () =>
+      makeRequest.get("/groupRelationships/followers?groupId=" + groupId).then((res) => {
+      return res.data;
+      })
+  );
 
-  // const mutation = useMutation(
-  //   (following) => {
-  //     if (following)
-  //       return makeRequest.delete("/relationships?userId=" + userId);
-  //     return makeRequest.post("/relationships", { userId });
-  //   },
-  //   {
-  //     onSuccess: () => {
-  //       // Invalidate and refetch
-  //       queryClient.invalidateQueries(["relationship"]);
-  //     },
-  //   }
-  // );
-
-  // const handleFollow = () => {
-  //   mutation.mutate(relationshipData.includes(currentUser.id));
-  // };
-
+  const queryClient = useQueryClient();
+  const mutation = useMutation(
+    (following) => {
+      if (following)
+        return makeRequest.delete("/groupRelationships?groupId=" + groupId);
+      return makeRequest.post("/groupRelationships", { groupId });
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["relationship"]);
+      },
+    }
+  );
+  const handleFollow = () => {
+    mutation.mutate(fData.includes(currentUser.id));
+  };
+  
   return (
     <div className="group">
       {isLoading ? (
@@ -88,7 +83,18 @@ const Group = () => {
                               <span className="name">{data.name}</span>
                             </Link>
                           </div>
-                          
+                          <div className="bottom">
+                            {fIsLoading ? (
+                              ""
+                            ) : (
+                              fData.includes(currentUser.id) ? (
+                                <button className="followed" onClick={handleFollow}>Вы подписаны</button>
+                              ) : (
+                                <button onClick={handleFollow}>Подписаться</button>)
+                            )
+                            }
+                            
+                          </div>  
                         </div>
                     {/* <div className="right">
                         

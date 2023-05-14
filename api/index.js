@@ -5,6 +5,7 @@ import commentRoutes from "./routes/comments.js";
 import likeRoutes from "./routes/likes.js";
 import groupRoutes from "./routes/groups.js"
 import relationshipRoutes from "./routes/relationships.js";
+import groupRelationshipRoutes from "./routes/groupRelationships.js";
 import groupPostsRoutes from "./routes/groupPosts.js"
 // import groupCommentsRoutes from "./routes/groupComments.js"
 // import groupLikesRoutes from "./routes/groupLikes.js"
@@ -48,6 +49,7 @@ app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/likes", likeRoutes);
 app.use("/api/relationships", relationshipRoutes);
+app.use("/api/groupRelationships", groupRelationshipRoutes);
 app.use("/api/groups", groupRoutes);
 app.use("/api/groupPosts", groupPostsRoutes);
 // app.use("/api/groupComments", groupCommentRoutes);

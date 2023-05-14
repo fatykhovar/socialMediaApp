@@ -4,7 +4,7 @@ import moment from "moment";
 
 export const getGroups = (req, res) => {
   const userId = req.params.userId;
-  const q = "SELECT * FROM groups";
+  const q = "SELECT * FROM groups ORDER BY groupname";
   // console.log("userId: ", userId);
   pool.query(q, (err, data) => {
     console.log("getGroups: ", data.rows);
@@ -29,16 +29,20 @@ export const findGroup = (req, res) => {
 };
 
 export const searchGroups = (req, res) => {
-  const key ='%'+ req.params.key+'%';
+  const key ='%'+ req.query.key+'%';
   // const key =req.params.key;
   console.log("groupsKey: ", key);
-  const q = "SELECT * FROM groups WHERE groupname LIKE $1"
-  
-  pool.query(q, [key],  (err, data) => {
+  const q = `SELECT g.* FROM groups AS g LEFT JOIN group_relationships AS g_r ON (g.id = g_r.group_id) WHERE g.groupname LIKE $1 
+  ORDER BY CASE 
+    WHEN g_r.follower_id = $2 THEN 1
+    ELSE 0
+    END DESC`
+  // const q = "SELECT * FROM groups WHERE groupname LIKE $1"
+  pool.query(q, [key, req.query.follower],  (err, data) => {
     console.log("searchGroups data: ", data.rows);
     console.log("searchGroups err: ",err);
     if (err) return res.status(500).json(err);
-    const { password, ...info } = data.rows;
+    const { ...info } = data.rows;
     return res.json(info);
   });
 }
@@ -52,7 +56,7 @@ export const addGroup = (req, res) => {
     if (err) return res.status(403).json("Token is not valid!");
     // console.log("addPost req: ", req.body);
     const q =
-      "INSERT INTO groups (name, description, profilepic, coverpic, createdat, userId) VALUES ($1, $2, $3, $4, $5, $6)";
+      "INSERT INTO groups (groupname, description, groupprofilepic, groupcoverpic, createdat, userId) VALUES ($1, $2, $3, $4, $5, $6)";
     pool.query(
       q, 
       [

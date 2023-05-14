@@ -12,7 +12,7 @@ import { Link, useLocation } from "react-router-dom";
 const FriendCard = ({user}) => {
   const userId = user.id;
   const { currentUser } = useContext(AuthContext);
-
+  console.log("user: ", user)
   console.log("curr usr id; ", currentUser.id)
   // const { isLoading: rIsLoading, data: relationshipData } = useQuery(
   //   ["relationship"],
@@ -22,21 +22,15 @@ const FriendCard = ({user}) => {
   //     })
   // );
 
-  const { isLoading: rIsLoading, data: relationshipData } = useQuery(
+  const { isLoading: fIsLoading, data: fData } = useQuery(
     ["relationship", userId],
     () =>
       makeRequest.get("/relationships/followers?followedUserId=" + userId).then((res) => {
-      //   let result = Object.values(res.data);
-      // const filteredData = result.filter(user => {
-      //     return user.followeruserid;
-      //   })
-      // console.log("filtredData: ", filteredData)
-      // return filteredData;
       return res.data;
       })
   );
   const queryClient = useQueryClient();
-  console.log("reData: ", relationshipData);
+  console.log("fData: ", fData);
 
   const mutation = useMutation(
     (following) => {
@@ -51,7 +45,7 @@ const FriendCard = ({user}) => {
     }
   );
   const handleFollow = () => {
-    mutation.mutate(relationshipData.includes(currentUser.id));
+    mutation.mutate(fData.includes(currentUser.id));
   };
   
   return (
@@ -69,16 +63,13 @@ const FriendCard = ({user}) => {
             </Link>
           </div>
            <div className="right">
-            {rIsLoading ? (
+            {fIsLoading ? (
               ""
             ) : (
-              <button
-             onClick={handleFollow}
-             >
-              {relationshipData.includes(currentUser.id)
-                      ? "У вас в друзьях"
-                      : "Добавить в друзья "}
-              </button>
+            fData.includes(currentUser.id) ? (
+                <button className="followed" onClick={handleFollow}>У вас в друзьях</button>
+              ) : (
+                <button onClick={handleFollow}>Добавить в друзья</button>)
             )
             }
             

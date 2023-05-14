@@ -3,7 +3,11 @@ import jwt from "jsonwebtoken";
 import moment from "moment";
 
 export const getComments = (req, res) => {
-  const q = "SELECT c.*, u.id AS userId, name, profilepic FROM comments AS c JOIN users AS u ON (u.id = c.userId) WHERE c.postId = $1 ";
+  let q = "";
+  if (req.query.isGroup)
+    q = "SELECT g_c.*, g.id AS user_id, groupname, groupprofilepic FROM group_comments AS g_c JOIN groups AS g ON (g.id = g_c.user_id) WHERE g_c.group_post_id = $1 ";
+  else
+    q = "SELECT c.*, u.id AS userId, name, profilepic FROM comments AS c JOIN users AS u ON (u.id = c.userId) WHERE c.postId = $1 ";
 
   pool.query(q, [req.query.postId], (err, data) => {
     console.log("comm err: ", err);
@@ -20,7 +24,11 @@ export const addComment = (req, res) => {
   jwt.verify(token, "secretkey", (err, userInfo) => {
     if (err) return res.status(403).json("Token is not valid!");
 
-    const q = "INSERT INTO comments(description, createdAt, userId, postId) VALUES ($1, $2, $3, $4)";
+    let q = "";
+    if (req.query.isGroup)
+      q = "INSERT INTO group_comments(description, created_at, user_id, group_post_id) VALUES ($1, $2, $3, $4)";
+    else
+      q = "INSERT INTO comments(description, createdAt, userId, postId) VALUES ($1, $2, $3, $4)";
     const values = [
       req.body.desc,
       moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
@@ -44,6 +52,7 @@ export const deleteComment = (req, res) => {
     if (err) return res.status(403).json("Token is not valid!");
 
     const commentId = req.params.id;
+    // let q = "";
     const q = "DELETE FROM comments WHERE id = $1 AND userid = $2";
 
     pool.query(q, [commentId, userInfo.id], (err, data) => {
