@@ -5,11 +5,12 @@
   display: flex;
   flex-direction: column;
   gap: 50px;
-  width: 100%;
+  width: 70%;
 }
 
 .friendsPage .navbar{
   gap: 20px;
+  /* justify-content: start; */
 }
 
 @media (max-width: 480px) {
@@ -48,7 +49,7 @@ color: rgb(126, 126, 126);
   border: 1px solid lightgray;
   border-radius: 5px;
   padding: 5px;
-  width: 70%;
+  width: 50%;
 }
 
 .friendsPage  .search input {

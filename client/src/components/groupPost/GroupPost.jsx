@@ -24,6 +24,11 @@ const GroupPost = ({ post }) => {
   const postId = post.id;
   console.log("groupLike postId:" , postId);
 
+  const { isLoading: cIsLoading, error: cError, data: sData } = useQuery(["comments",{postId} ], () =>
+  makeRequest.get(`/comments?postId=${postId}&isGroup=true`).then((res) => {
+    return res.data.rows;
+  })
+  );
   const { isLoading, error, data } = useQuery(["likes", postId], () =>
     makeRequest.get(`/likes?postId=${postId}&isGroup=true`).then((res) => {
       return res.data;
@@ -109,6 +114,7 @@ const GroupPost = ({ post }) => {
           <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
             <TextsmsOutlinedIcon />
             Комментарии
+            {sData ? <span>({Object.keys(sData).length})</span>  : <span></span>}
           </div>
           <div className="item">
             <ShareOutlinedIcon />

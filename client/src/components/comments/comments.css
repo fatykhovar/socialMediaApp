@@ -61,10 +61,15 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  gap: 3px;
   -webkit-box-align: start;
+    -ms-flex-align: start;
+      align-items: start;
+  gap: 3px;
+  margin: 0;
+
+  /* -webkit-box-align: start;
       -ms-flex-align: start;
-          align-items: flex-start;
+          align-items: flex-start; */
 }
 
 .comments .comment .info span {
@@ -72,6 +77,7 @@
 }
 
 .comments .comment .info p {
+  margin: 0;
   color: #555;
 }
 

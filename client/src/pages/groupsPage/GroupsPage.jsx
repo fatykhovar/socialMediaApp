@@ -71,7 +71,7 @@ const GroupsPage = ()=>{
               Создать сообщество
             </button>
         </div>
-        <div className="scroller">
+        <div className="scroll">
           {
             key !== "" ? (
               results.map((group) => <GroupCard  group={group}/>)

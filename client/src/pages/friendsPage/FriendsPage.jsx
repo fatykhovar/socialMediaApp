@@ -74,7 +74,7 @@ const FriendsPage = ()=>{
             <span>Создать сообщество</span>
           </div> */}
         </div>
-        <div className="scroller">
+        <div className="scroll">
           {
             key !== "" ? (
               results.map((user) => <FriendCard  user={user}/>)

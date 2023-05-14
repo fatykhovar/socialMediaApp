@@ -5,6 +5,7 @@ import React from 'react';
 import GroupIcon from '@mui/icons-material/Group';
 import GroupsIcon from '@mui/icons-material/Groups';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
+import { Link } from "react-router-dom";
 
 const LeftBar = () => {
 
@@ -15,29 +16,44 @@ const LeftBar = () => {
       <div className="container">
         <div className="menu">
           <div className="user">
-            <img
-              src={"/upload/" +currentUser.profilepic}
-              alt=""
-            />
-            <span>{currentUser.name}</span>
+            <div className="item">
+              <Link
+                to={`/profile/${currentUser.id}`}
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <img
+                src={"/upload/" +currentUser.profilepic}
+                alt=""/>
+                <span className="name">{currentUser.name}</span>
+              </Link>
+            </div>
           </div>
           <div className="item">
-            <a href={"/"} >
+            <Link
+              to={`/`}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
               <NewspaperIcon/>
-            </a>
-            <span>Новости</span>
+              <span>Новости</span>
+            </Link>
           </div>
           <div className="item">
-            <a href="/friends">
+            <Link
+              to={`/friends`}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
               <GroupIcon/>
-            </a>
-            <span>Друзья</span>
+              <span>Друзья</span>
+            </Link>
           </div>
           <div className="item">
-            <a href={"/groups"} >
+            <Link
+              to={`/groups`}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
               <GroupsIcon/>
-            </a>
-            <span>Сообщества</span>
+              <span>Сообщества</span>
+            </Link>
           </div>
         </div>
         <hr />

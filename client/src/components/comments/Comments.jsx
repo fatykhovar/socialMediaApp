@@ -16,6 +16,8 @@ const Comments = ({ postId, isGroup }) => {
       return res.data.rows;
     })
   );
+  console.log("comm isLoad: ", isLoading);
+  console.log("comm error: ", error);
   console.log("comm data: ", data);
   const queryClient = useQueryClient();
 
