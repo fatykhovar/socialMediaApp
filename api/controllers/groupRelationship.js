@@ -2,12 +2,16 @@ import {pool } from "../pool.js";
 import jwt from "jsonwebtoken";
 
 export const getGroupRelationships = (req,res)=>{
-    const q = `SELECT g.* FROM groups AS g LEFT JOIN group_relationships AS g_r ON (g.id = g_r.group_id) 
-    ORDER BY CASE 
-    WHEN g_r.follower_id = $1 THEN 1
-    ELSE 0
-    END DESC`;
-
+    // const q = `SELECT  g.* FROM groups AS g LEFT JOIN group_relationships AS g_r ON (g.id = g_r.group_id) 
+    // ORDER BY CASE 
+    // WHEN g_r.follower_id = $1 THEN 1
+    // ELSE 0
+    // END DESC`;
+    const q =`SELECT DISTINCT g.*
+    FROM groups AS g
+    LEFT JOIN group_relationships AS g_r ON (g.id = g_r.group_id) 
+    WHERE g_r.follower_id = $1
+    ORDER BY g.id ASC`
    pool.query(q, [req.query.follower], (err, data) => {
     console.log("group rel err: ", err);
     console.log("group rel data: ", data);

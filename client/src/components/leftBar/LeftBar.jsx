@@ -12,7 +12,7 @@ const LeftBar = () => {
   const { currentUser } = useContext(AuthContext);
 
   return (
-    <div className="leftBar">
+    <div className="leftBar col-12 col-md-2 ">
       <div className="container">
         <div className="menu">
           <div className="user">
@@ -28,6 +28,9 @@ const LeftBar = () => {
               </Link>
             </div>
           </div>
+        </div>
+        <hr />
+        <div className="menu">
           <div className="item">
             <Link
               to={`/`}
@@ -58,12 +61,7 @@ const LeftBar = () => {
         </div>
         <hr />
         <div className="menu">
-          {/* <span>Your shortcuts</span> */}
-        </div>
-        <hr />
-        <div className="menu">
           {/* <span>Others</span> */}
-          
         </div>
       </div>
     </div>

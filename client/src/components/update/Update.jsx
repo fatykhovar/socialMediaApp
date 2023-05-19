@@ -1,21 +1,21 @@
 import { useState } from "react";
 import { makeRequest } from "../../axios";
 import "./update.css";
-import { useMutation, useQueryClient } from "react-query";
+import {useQuery, useMutation, useQueryClient } from "react-query";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import React  from 'react'; 
+import ChoiceList from '../choiceList/ChoiseList';
 
 const Update = ({ setOpenUpdate, user }) => {
   const [cover, setCover] = useState(null);
   const [profile, setProfile] = useState(null);
+  const [country, setCountry] = useState('Россия');
+  const [region, setRegion] = useState('Татарстан');
+  const [city, setCity] = useState('Казань');
   const [texts, setTexts] = useState({
     email: user.email,
-    password: user.password,
     name: user.name,
-    // city: user.city,
-    // website: user.website,
   });
-  console.log(user);
   const upload = async (file) => {
     //console.log(file);
     try {
@@ -57,11 +57,49 @@ const Update = ({ setOpenUpdate, user }) => {
     coverUrl = cover ? await upload(cover) : user.coverpic;
     profileUrl = profile ? await upload(profile) : user.profilepic;
 
-    mutation.mutate({ ...texts, coverPic: coverUrl, profilePic: profileUrl });
+    mutation.mutate({ ...texts, coverPic: coverUrl, profilePic: profileUrl, country:country});
     setOpenUpdate(false);
     setCover(null);
     setProfile(null);
   };
+
+  const handleSelectCountry = (event) => {
+    setCountry(event.target.value);
+  };
+
+  const handleSelectRegion = (event) => {
+    setRegion(event.target.value);
+  };
+
+  const handleSelectCity = (event) => {
+    setCity(event.target.value);
+  };
+
+  const countries = ['Option 1', 'Option 2', 'Option 3'];
+
+  const {isLoading: countryIsLoading, data: countryData} = useQuery(
+    ["country"],
+    () =>
+      makeRequest.get("/location/country").then((res) => {
+      return res.data;
+      })
+  );
+
+  const {isLoading: regionIsLoading, data: regionData} = useQuery(
+    ["region"],
+    () =>
+      makeRequest.get("/location/region").then((res) => {
+      return res.data;
+      })
+  );
+
+  const {isLoading: cityIsLoading, data: cityData} = useQuery(
+    ["city"],
+    () =>
+      makeRequest.get("/location/city").then((res) => {
+      return res.data;
+      })
+  );
 
   return (
     <div className="update">
@@ -118,13 +156,6 @@ const Update = ({ setOpenUpdate, user }) => {
               name="email"
               onChange={handleChange}
             />
-            <label>Пароль</label>
-            <input
-              type="text"
-              value={texts.password}
-              name="password"
-              onChange={handleChange}
-            />
             <label>Имя</label>
             <input
               type="text"
@@ -132,18 +163,54 @@ const Update = ({ setOpenUpdate, user }) => {
               name="name"
               onChange={handleChange}
             />
-            <label>Город</label>
+            <div className="select">
+              <label>Страна: </label>
+              <select
+                value={country}
+                onChange={handleSelectCountry}>
+                {countryIsLoading ? (
+                  "Загрузка"
+                ):(
+                  countryData.map(o => (
+                  <option key={o} value={o}>{o}</option>
+                ))
+                ) }
+              </select>
+            </div>
+            <div className="select">
+              <label>Регион: </label>
+              <select
+                value={region}
+                onChange={handleSelectRegion}>
+                {regionIsLoading ? (
+                  "Загрузка"
+                ):(
+                  regionData.map(o => (
+                  <option key={o} value={o}>{o}</option>
+                ))
+                ) }
+              </select>
+            </div>
+            <div className="select">
+              <label>Город: </label>
+              <select
+                value={city}
+                onChange={handleSelectCity}>
+                {cityIsLoading ? (
+                  "Загрузка"
+                ):(
+                  cityData.map(o => (
+                  <option key={o} value={o}>{o}</option>
+                ))
+                ) }
+              </select>
+            </div>
+              {/* <ChoiceList choices={countries} selectedChoice={country} onSelect={handleSelectCountry} /> */}
+            {/* <label>Город</label>
             <input
               type="text"
               name="city"
               value={texts.city}
-              onChange={handleChange}
-            />
-            {/* <label>Website</label>
-            <input
-              type="text"
-              name="website"
-              value={texts.website}
               onChange={handleChange}
             /> */}
             <button onClick={handleClick}>Сохранить</button>

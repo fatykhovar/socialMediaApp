@@ -11,11 +11,11 @@ export const getComments = (req, res) => {
     q = `SELECT c.*, u.id AS userId, name, profilepic FROM comments AS c JOIN users AS u ON (u.id = c.userId) WHERE c.postId = $1 ORDER BY c.createdat DESC`;
 
   pool.query(q, [req.query.postId], (err, data) => {
-    console.log("q: ", q);
-    console.log("comm err: ", err);
-    console.log("isGroup: ", req.query.isGroup);
-    console.log("postid: ", req.query.postId);
-    console.log("comm data: ", data.rows);
+    // console.log("q: ", q);
+    // console.log("comm err: ", err);
+    // console.log("isGroup: ", req.query.isGroup);
+    // console.log("postid: ", req.query.postId);
+    // console.log("comm data: ", data.rows);
     if (err) return res.status(500).json(err);
     return res.status(200).json(data);
   });

@@ -57,7 +57,7 @@ const GroupsPage = ()=>{
   const userId = parseInt(useLocation().pathname.split("/")[2]);
 
   return(
-    <div className="groupsPage">
+    <div className="groupsPage col-12 col-md-8">
         <div className="navbar">
           <h1>Сообщества</h1>
           <div className="search">

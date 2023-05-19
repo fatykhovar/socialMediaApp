@@ -69,7 +69,7 @@ const GroupPost = ({ post }) => {
   // };
 
   return (
-    <div className="groupPost">
+    <div className="groupPost  col-12 col-md-8">
       <div className="container">
         <div className="user">
           <div className="userInfo">

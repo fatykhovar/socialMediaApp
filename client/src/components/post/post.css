@@ -4,13 +4,22 @@
   border-radius: 20px;
   background-color: white;
   color: #000;
-  width: 60%;
+  width: 90%;
   margin: 0 auto;
 }
 
 .post .deleted{
   padding: 20px;
-  text-align: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+          -webkit-box-pack: center;
+          -ms-flex-pack: center;
+              justify-content: center;
+  align-items: center;
 }
 
 .post .container {
@@ -84,6 +93,32 @@
   -o-object-fit: cover;
      object-fit: cover;
   margin-top: 20px;
+}
+
+.post .container .content .file {
+  width: 40%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.post .container .content .file:hover {
+  color: #007bff;
+}
+
+.post .container .content .file svg {
+  margin-right: 5px;
+  fill: #333;
+  width: 20px;
+  height: 20px;
+}
+
+.post .container .content .file span {
+  margin-left: 5px;
 }
 
 .post .container .info {

@@ -2,12 +2,15 @@ import {pool } from "../pool.js";
 import jwt from "jsonwebtoken";
 
 export const getRelationships = (req,res)=>{
-    const q = `SELECT u.* FROM users AS u LEFT JOIN relationships AS r ON (u.id = r.followedUserId) 
-    ORDER BY CASE 
-    WHEN r.followerUserId = $1 THEN 1
-    ELSE 0
-    END DESC`;
+    // const q = `SELECT u.* FROM users AS u LEFT JOIN relationships AS r ON (u.id = r.followedUserId) WHERE u.id != $1
+    // ORDER BY CASE 
+    // WHEN r.followerUserId = $1 THEN 1
+    // ELSE 0
+    // END DESC`;
 
+    const q = `SELECT DISTINCT u.* FROM users AS u 
+    LEFT JOIN relationships AS r ON (u.id = r.followedUserId) WHERE u.id != $1 AND r.followerUserId = $1
+    ORDER BY u.id ASC`;
    pool.query(q, [req.query.followerUserId], (err, data) => {
     // console.log("rel err: ", err);
     // console.log("rel data: ", data);

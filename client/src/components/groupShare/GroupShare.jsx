@@ -58,7 +58,7 @@ const GroupShare = () => {
   };
 
   return (
-    <div className="share">
+    <div className="share col-md-3">
       <div className="container">
         <div className="top">
           <div className="left">

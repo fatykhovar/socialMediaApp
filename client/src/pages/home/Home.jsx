@@ -4,11 +4,13 @@ import Posts from "../../components/posts/Posts"
 import Share from "../../components/share/Share"
 import "./home.css"
 import React  from 'react';
+import RightBar from "../../components/rightBar/RightBar";
 
 const Home = () => {
   return (
-    <div className="home">
+    <div className="home col-12 col-md-2">
       {/* <Stories/> */}
+      {/* <RightBar/> */}
       <Share/>
       <Posts/>
     </div>

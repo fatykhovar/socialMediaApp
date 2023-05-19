@@ -79,38 +79,35 @@ const Profile = () => {
           </div>
           <div className="profileContainer">
             <div className="uInfo">
-              <div className="left">
-                {/* <div className="item">
-                    <PlaceIcon />
-                    <span>{data.city}</span>
-                  </div> */}
-              </div>
+              {/* <div className="left">
+                
+              </div> */}
               <div className="center">
                 <span>{data.name}</span>
                 <div className="info">
-                  
-                  {/* <div className="item">
-                    <LanguageIcon />
-                    <span>{data.website}</span>
-                  </div> */}
+                  <div className="item">
+                    <PlaceIcon />
+                    <span>{data.country_name}</span>
+                  </div>
+              
                 </div>
                 
-                  {/* <button onClick={() => setOpenUpdate(true)}>Редактировать</button> */}
-                  {rIsLoading ? (
-                  "loading"
-                    ) : userId === currentUser.id ? (
-                      <button onClick={() => setOpenUpdate(true)}>Редактировать</button>
-                    ) : (
-                        relationshipData.includes(currentUser.id) ? (
-                          <button className="followed" onClick={handleFollow}>У вас в друзьях</button>
-                            ) : (
-                          <button onClick={handleFollow}>Добавить в друзья</button>)
-                    )
-                  }
-              </div>
-              <div className="right">
+                {rIsLoading ? (
+                "loading"
+                  ) : userId === currentUser.id ? (
+                    <button onClick={() => setOpenUpdate(true)}>Редактировать</button>
+                  ) : (
+                      relationshipData.includes(currentUser.id) ? (
+                        <button className="followed" onClick={handleFollow}>У вас в друзьях</button>
+                          ) : (
+                        <button onClick={handleFollow}>Добавить в друзья</button>)
+                  )
+                }
+                 <div className="right">
                 {/* <GroupIcon onClick={() => setOpenFriends(true)}/> */}
               </div>
+              </div>
+             
             </div>
           </div>
           <Posts userId={userId} />

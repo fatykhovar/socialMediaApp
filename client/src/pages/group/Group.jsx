@@ -50,7 +50,7 @@ const Group = () => {
   };
   
   return (
-    <div className="group">
+    <div className="group col-12 col-md-8">
       {isLoading ? (
         "loading"
       ) : (

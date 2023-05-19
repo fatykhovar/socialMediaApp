@@ -5,7 +5,7 @@
   background-color: white;
   color: #000;
   margin-bottom: 20px;
-  width: 60%;
+  width: 90% !important;
   margin: 40px auto;
 }
 
@@ -61,17 +61,27 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+    flex-direction: column;
   -webkit-box-pack: end;
       -ms-flex-pack: end;
           justify-content: flex-end;
 }
 
- .share .container .top .right .file {
+ .share .container .top .right .image {
   width: 100px;
   height: 100px;
   -o-object-fit: cover;
      object-fit: cover;
   border-radius: 0px;
+}
+
+.share .container .top .right .file  {
+  width: 100px;
+  height: 60px !important;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 0px;
+  color: #000;
 }
 
  .share .container hr {

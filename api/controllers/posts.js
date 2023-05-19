@@ -45,7 +45,7 @@ export const addPost = (req, res) => {
     if (err) return res.status(403).json("Token is not valid!");
     // console.log("addPost req: ", req.body);
     const q =
-      "INSERT INTO posts (description, image, createdat, userId) VALUES ($1, $2, $3, $4)";
+      "INSERT INTO posts (description, image, createdat, userId, file) VALUES ($1, $2, $3, $4, $5)";
     pool.query(
       q, 
       [
@@ -53,11 +53,12 @@ export const addPost = (req, res) => {
         req.body.desc,
         req.body.img,
         moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
-        userInfo.id
+        userInfo.id,
+        req.body.file
       ], 
       (err, data) => {
-      // console.log("addpost data: ", data);
-      // console.log("addpost err: ", err);
+      console.log("addpost data: ", data);
+      console.log("addpost err: ", err);
 
       if (err) return res.status(500).json(err);
       return res.status(200).json("Post has been created.");

@@ -60,7 +60,7 @@ const FriendsPage = ()=>{
 
 
   return(
-    <div className="friendsPage">
+    <div className="friendsPage col-12 col-md-8">
         <div className="navbar">
           <h1>Друзья</h1>
           <div className="search">

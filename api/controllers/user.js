@@ -4,12 +4,15 @@ import jwt from "jsonwebtoken";
 
 export const getUser = (req, res) => {
   const userId = req.params.userId;
-  const q = "SELECT * FROM users WHERE id= $1";
+  const q = "SELECT u.*, c.name AS country_name FROM users AS u JOIN country AS c ON (c.id = u.country_id AND u.country_id IS NOT NULL) WHERE u.id= $1 ";
+  // const q = "SELECT *  FROM users AS u JOIN country AS c ON (c.id = u.country_id) WHERE u.id= $1";
+
   // console.log("userId: ", userId);
   pool.query(q, [userId], (err, data) => {
-    // console.log(data.rows[0]);
+    console.log("getUser err: ", err);
+    console.log("getUser data: ", data.rows[0]);
     if (err) return res.status(500).json(err);
-    const { password, ...info } = data.rows[0];
+    const {...info } = data.rows[0];
     
     return res.json(info);
   });
@@ -60,20 +63,21 @@ export const updateUser = (req, res) => {
     if (err) return res.status(403).json("Token is not valid!");
     console.log("update userInfo: ", userInfo)
     const q =
-    "UPDATE users SET name=$1, city=$2, profilePic=$3, coverPic=$4 WHERE id=$5";
+    "UPDATE users SET name=$1, profilePic=$2, coverPic=$3, country_id=(SELECT id FROM country WHERE name=$5) WHERE id=$4";
     pool.query(
       q,
       [
         req.body.name[0],
-        req.body.city[0],
+        // req.body.city,
         // req.body.website,
         req.body.profilePic,
         req.body.coverPic,
-        userInfo.id
+        userInfo.id,
+        req.body.country
       ],
       (err, data) => {
-        console.log("userinfo: ", userInfo);
-        console.log("err: ",err);
+        // console.log("update data: ", data);
+        console.log("update err: ",err);
         if (err) res.status(500).json(err);
         if (data) return res.json("Updated!");
         return res.status(403).json("You can update only your post!");

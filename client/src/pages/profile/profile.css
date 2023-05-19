@@ -1,5 +1,7 @@
  .profile {
   background-color: #f6f3f3;
+  /* margin-top: 5px; */
+  margin: 5px 2%;
 }
 
  .profile .images {
@@ -13,6 +15,9 @@
   height: 100%;
   -o-object-fit: cover;
      object-fit: cover;
+     -webkit-box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
+  box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
+  border-radius: 20px;
 }
 
  .profile .images .profilePic {
@@ -32,6 +37,7 @@
   padding: 20px 70px;
   width: 60%;
   margin: 0 auto;
+  
 }
 
 @media (max-width: 480px) {
@@ -43,6 +49,7 @@
 @media (max-width: 960px) {
    .profile .profileContainer {
     padding: 20px;
+    
   }
 }
 
@@ -64,6 +71,7 @@
       -ms-flex-pack: justify;
           justify-content: space-between;
   margin-bottom: 20px;
+  
 }
 
 @media (max-width: 480px) {
@@ -86,6 +94,7 @@
   display: -ms-flexbox;
   display: flex;
   gap: 10px;
+  margin: 20px 20px;
 }
 
 @media (max-width: 960px) {
@@ -116,6 +125,22 @@
   gap: 10px;
 }
 
+.profile .profileContainer .uInfo .center .info .item{
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 5px;
+  color: #555;
+
+}
+
+.profile .profileContainer .uInfo .center .info .item span{
+  font-size: 20px !important;
+}
+
  .profile .profileContainer .uInfo .center span {
   font-size: 30px;
   font-weight: 500;
@@ -134,14 +159,7 @@
 }
 
  .profile .profileContainer .uInfo .center .info .item {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  gap: 5px;
-  color: #555;
+  
 }
 
  .profile .profileContainer .uInfo .center .info .item span {
