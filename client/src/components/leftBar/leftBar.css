@@ -84,14 +84,14 @@
 }
 
 .leftBar .container .menu .user img {
-  width: 30px;
-  height: 30px;
+  width: 40px !important;
+  height: 40px;
   border-radius: 50%;
   -o-object-fit: cover;
      object-fit: cover;
 }
 
- .leftBar .container .menu .user span {
+ .leftBar .container .menu .user .item span {
   font-size: 20px;
 }
 

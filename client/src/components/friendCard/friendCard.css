@@ -35,10 +35,20 @@
         -ms-flex: 3;
             flex: 3;
   }
+
+
   
+  .friend .container .top .left .info{
+    gap: 30px;
+  }
+  .friend .container .top .left .info .name{
+    margin-bottom: 20px;
+    font-size: 20px;
+  }
+
    .friend .container .top .left img {
-    width: 40px;
-    height: 40px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     -o-object-fit: cover;
        object-fit: cover;

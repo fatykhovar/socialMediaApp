@@ -2,6 +2,7 @@ import "./friendCard.css";
 import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import ImageIcon from '@mui/icons-material/Image';
+import PlaceIcon from "@mui/icons-material/Place";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 import { useMutation, useQueryClient, useQuery } from "react-query";
@@ -54,13 +55,21 @@ const FriendCard = ({user}) => {
         <div className="top">
           <div className="left">
             <img src={"/upload/" + user.profilepic} alt="" />
-            <Link
-                to={`/profile/${user.id}`}
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-              {/* {console.log("user: ", user)} */}
-              <span className="name">{user.name}</span>
-            </Link>
+            <div className="info">
+              <div className="name">
+                <Link
+                    to={`/profile/${user.id}`}
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                  {/* {console.log("user: ", user)} */}
+                  <span className="name">{user.name}</span>
+                </Link>
+              </div>
+              <div className="item">
+                <PlaceIcon />
+                <span>{user.country_name}, {user.city_name}</span>
+              </div>
+            </div>
           </div>
            <div className="right">
             {fIsLoading ? (
@@ -75,10 +84,10 @@ const FriendCard = ({user}) => {
             
           </div>
         </div>
-        <hr />
+        {/* <hr />
         <div className="bottom">
          
-        </div>
+        </div> */}
       </div>
     </div>
   );

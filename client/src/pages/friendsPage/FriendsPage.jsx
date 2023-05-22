@@ -13,7 +13,7 @@ import FriendCard from "../../components/friendCard/FriendCard";
 const FriendsPage = ()=>{
   const [key, setKey] = useState("");
   const [results, setResults] = useState([]);
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser, setIsHome } = useContext(AuthContext);
 
   const { isLoading, error, data } = useQuery(["user"], () =>
     makeRequest.get("/user").then((res) => {
@@ -21,6 +21,7 @@ const FriendsPage = ()=>{
     })
   );
 
+  setIsHome(false)
   console.log("Data: ", data);
 
 
@@ -33,14 +34,6 @@ const FriendsPage = ()=>{
   );
 
   console.log("reData: ", relationshipData);
-
-  const { isLoading: notFolIsLoading, error: notFolError,  data: notFolData } = useQuery(
-    ["relationship"],
-    () =>
-      makeRequest.get("/relationships/notFollowers?followerUserId=" + currentUser.id).then((res) => {
-        return res.data;
-      })
-  );
 
   useEffect(() => {
     if (key !== "") {

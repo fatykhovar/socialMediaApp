@@ -4,31 +4,50 @@ import moment from "moment";
 
 export const getPosts = (req, res) => {
   const userId = req.query.userId;
+  const currentUserId = req.query.currentUserId;
   const token = req.cookies.accessToken;
   if (!token) return res.status(401).json("Not logged in!");
-  // console.log("getPosts req: ", req);
+  console.log("getPosts currentuser: ", currentUserId);
 
   jwt.verify(token, "secretkey", (err, userInfo) => {
     if (err) return res.status(403).json("Token is not valid!");
 
-    //console.log(userId);
+    const q = 
+      userId !== "undefined"
+        ? `SELECT p.*, u.id AS userid, name, profilepic FROM posts AS p JOIN users AS u ON (u.id = p.userid) WHERE p.userId = $1 ORDER BY p.createdAt DESC`
+        : `SELECT p.*, u.id AS userid, u.name, u.profilepic FROM posts AS p
+        JOIN relationships AS r ON (r.followeduserid = p.userid)
+        JOIN users AS u ON (u.id = p.userid OR p.userid = $1)
+        WHERE r.followeruserid = $1 
+        ORDER BY u.study ASC, u.work, p.createdAt DESC`
+    const values =
+      userId !== "undefined" ? [userId] : [currentUserId];
 
-    // const q =
-    //   userId !== "undefined"
-    //     ? `SELECT p.*, u.id AS userId, name, profilePic FROM posts AS p JOIN users AS u ON (u.id = p.userId) WHERE p.userId = ? ORDER BY p.createdAt DESC`
-    //     : `SELECT p.*, u.id AS userId, name, profilePic FROM posts AS p JOIN users AS u ON (u.id = p.userId)
-    // LEFT JOIN relationships AS r ON (p.userId = r.followedUserId) WHERE r.followerUserId= ? OR p.userId =?
-    // ORDER BY p.createdAt DESC`;
+    pool.query(q, values, (err, data) => {
+      console.log("getPosts data: ", data.rows);
+      console.log("posts err: ", err);
+      if (err) return res.status(500).json(err);
+      return res.status(200).json(data);
+    });
+  });
+};
+
+
+export const getFriendsPosts = (req, res) => {
+  const userId = req.query.userId;
+  const token = req.cookies.accessToken;
+  if (!token) return res.status(401).json("Not logged in!");
+
+  jwt.verify(token, "secretkey", (err, userInfo) => {
+    if (err) return res.status(403).json("Token is not valid!");
 
     const q = 
       userId !== "undefined"
-        ? "SELECT p.*, u.id AS userid, name, profilepic FROM posts AS p JOIN users AS u ON (u.id = p.userid) WHERE p.userId = $1 ORDER BY p.createdAt DESC"
-        :"SELECT p.*, u.id AS userid, name, profilepic FROM posts AS p JOIN users AS u ON (u.id = p.userid) ORDER BY p.createdAt DESC"
-    const q1 = "SELECT * FROM posts"
-    const values =
-      userId !== "undefined" ? [userId] : [];
+        ? `SELECT p.*, u.id AS userid, name, profilepic FROM posts AS p JOIN users AS u ON (u.id = p.userid) WHERE p.userId = $1 ORDER BY p.createdAt DESC`
+        : `SELECT p.*, u.id AS userid, name, profilepic FROM posts AS p JOIN users AS u ON (u.id = p.userid) ORDER BY p.createdAt DESC`
 
-    pool.query(q, values, (err, data) => {
+
+    pool.query(q, userId, (err, data) => {
       // console.log("getPosts data: ", data);
       // console.log("posts err: ", err);
       if (err) return res.status(500).json(err);

@@ -23,7 +23,7 @@ import {
 
 
 function App() {
-const { currentUser } = useContext(AuthContext);
+const { currentUser, setIsHome } = useContext(AuthContext);
 const queryClient = new QueryClient();
 
 const Layout = () => {
@@ -53,7 +53,7 @@ const LoggedInRoute = ({ children }) => {
   if (currentUser) {
     return <Navigate to="/" />;
   }
-
+  
   return children;
 };
 

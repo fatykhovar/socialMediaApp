@@ -30,7 +30,7 @@ const Share = () => {
   const uploadFile = async () => {
     try {
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", file, fileName);
       const res = await makeRequest.post("/upload/files", formData);
       return res.data;
     } catch (err) {
@@ -117,7 +117,8 @@ const Share = () => {
               id="file-upload"
               style={{ display: "contents" }}
               onChange={(e) => {setFile(e.target.files[0]);
-              setFileName(e.target.files[0].name)}}
+              setFileName(e.target.files[0].name)
+            console.log("eTarget: ", e.target.files[0])}}
             />
             {/* <div className="item">
               <AddLocationAltIcon/>

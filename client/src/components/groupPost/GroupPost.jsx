@@ -20,9 +20,8 @@ const GroupPost = ({ post }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const queryClient = useQueryClient();
   const { currentUser } = useContext(AuthContext);
-  console.log("post: ", post);
   const postId = post.id;
-  console.log("groupLike postId:" , postId);
+  // console.log("groupLike postId:" , postId);
 
   const { isLoading: cIsLoading, error: cError, data: sData } = useQuery(["comments",{postId} ], () =>
   makeRequest.get(`/comments?postId=${postId}&isGroup=true`).then((res) => {
@@ -47,7 +46,6 @@ const GroupPost = ({ post }) => {
       },
     }
   );
-  console.log("groupLike data:" , data);
   // const deleteMutation = useMutation(
   //   (postId) => {
   //     return makeRequest.delete("/posts/" + postId);

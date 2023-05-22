@@ -14,10 +14,11 @@ import GroupPosts from "../../components/groupPosts/GroupPosts";
 const Group = () => {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openFriends, setOpenFriends] = useState(false);
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser, setIsHome } = useContext(AuthContext);
 
   const groupId = parseInt(useLocation().pathname.split("/")[2]);
 
+  setIsHome(false);
   const { isLoading, error, data } = useQuery(["groupsFind"], () =>
     makeRequest.get("/groups/find/" + groupId).then((res) => {
       return res.data;

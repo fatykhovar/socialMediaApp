@@ -109,14 +109,17 @@
   gap: 10px;
 }
 
-.rightBar .container .item .user .buttons button {
+.rightBar .container .item button {
   border: none;
-  padding: 5px;
+  padding: 8px;
+  width: 150px;
   color: white;
   cursor: pointer;
+  border-radius: 3px;
+
 }
 
-.rightBar .container .item .user .buttons button:first-child {
+.rightBar .container .item  button:first-child {
   background-color: #5271ff;
 }
 

@@ -15,6 +15,16 @@ export const getGroups = (req, res) => {
   });
 };
 
+export const getGroupTheme  = (req, res) => {
+  const q = "SELECT theme FROM group_themes ";
+  pool.query(q, (err, data) => {
+    console.log("theme: ",data.rows);
+    if (err) return res.status(500).json(err);
+    return res.status(200).json(data.rows.map(c=>c.theme));
+  
+  });
+};
+
 export const findGroup = (req, res) => {
   const groupId = req.params.groupId;
   const q = "SELECT * FROM groups AS g JOIN users AS u ON (u.id = g.userid) WHERE g.id= $1";
@@ -56,7 +66,8 @@ export const addGroup = (req, res) => {
     if (err) return res.status(403).json("Token is not valid!");
     // console.log("addPost req: ", req.body);
     const q =
-      "INSERT INTO groups (groupname, description, groupprofilepic, groupcoverpic, createdat, userId) VALUES ($1, $2, $3, $4, $5, $6)";
+      `INSERT INTO groups (groupname, description, groupprofilepic, groupcoverpic, createdat, userId, theme_id)
+       VALUES ($1, $2, $3, $4, $5, $6, (SELECT id FROM group_themes WHERE theme=$7))`;
     pool.query(
       q, 
       [
@@ -65,7 +76,8 @@ export const addGroup = (req, res) => {
         req.body.profilePic,
         req.body.coverPic,
         moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
-        userInfo.id
+        userInfo.id,
+        req.body.theme
       ], 
       (err, data) => {
       console.log("addgroup data: ", data);

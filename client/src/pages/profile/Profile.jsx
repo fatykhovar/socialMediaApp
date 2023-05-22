@@ -1,8 +1,10 @@
 import "./profile.css";
 import PlaceIcon from "@mui/icons-material/Place";
 import GroupIcon from '@mui/icons-material/Group';
+import SchoolIcon from '@mui/icons-material/School';
 import Posts from "../../components/posts/Posts";
 import Friends from "../../components/friends/Friends";
+import WorkIcon from '@mui/icons-material/Work';
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import { makeRequest } from "../../axios";
 import { useLocation } from "react-router-dom";
@@ -16,10 +18,10 @@ import React  from 'react';
 const Profile = () => {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openFriends, setOpenFriends] = useState(false);
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser, setIsHome } = useContext(AuthContext);
 
   const userId = parseInt(useLocation().pathname.split("/")[2]);
-
+  setIsHome(false);
   const { isLoading, error, data } = useQuery(["userFind"], () =>
     makeRequest.get("/user/find/" + userId).then((res) => {
       return res.data;
@@ -64,7 +66,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="profile">
+    <div className="profile col-12 col-md-6">
       {isLoading ? (
         "loading"
       ) : (
@@ -84,14 +86,38 @@ const Profile = () => {
               </div> */}
               <div className="center">
                 <span>{data.name}</span>
-                <div className="info">
-                  <div className="item">
-                    <PlaceIcon />
-                    <span>{data.country_name}</span>
+                <div className="desc">
+                  <div className="info">
+                    <div className="item">
+                      <PlaceIcon />
+                      <span>{data.country_name}, {data.city_name}</span>
+                    </div>
                   </div>
-              
+                  {
+                    data.study ? (
+                      <div className="info">
+                        <div className="item">
+                          <SchoolIcon />
+                          <span>{data.study}</span>
+                        </div>
+                      </div>
+                    ): (
+                      <></>
+                    )
+                  }
+                  {
+                    data.work ? (
+                      <div className="info">
+                        <div className="item">
+                          <WorkIcon/>
+                          <span>{data.work}</span>
+                        </div>
+                      </div>
+                    ): (
+                      <></>
+                    )
+                  }
                 </div>
-                
                 {rIsLoading ? (
                 "loading"
                   ) : userId === currentUser.id ? (

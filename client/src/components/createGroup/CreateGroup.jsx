@@ -1,13 +1,13 @@
 import { makeRequest } from "../../axios";
 import "./createGroup.css";
-import { useMutation, useQueryClient } from "react-query";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import React  from 'react'; 
 
 const CreateGroup = ({setCreateGroup}) => {
-
+  const [theme, setTheme] = useState("Новости");
 	const [cover, setCover] = useState(null);
   const [profile, setProfile] = useState(null);
   const [texts, setTexts] = useState({
@@ -58,11 +58,26 @@ const CreateGroup = ({setCreateGroup}) => {
     coverUrl = await upload(cover);
     profileUrl = await upload(profile);
 
-    mutation.mutate({ ...texts, coverPic: coverUrl, profilePic: profileUrl });
+    mutation.mutate({ ...texts, coverPic: coverUrl, profilePic: profileUrl, theme:theme });
     setCreateGroup(false);
     setCover(null);
     setProfile(null);
   };
+
+
+  const {isLoading: themeIsLoading, data: themeData} = useQuery(
+    ["theme"],
+    () =>
+      makeRequest.get("/groups/theme").then((res) => {
+      return res.data;
+      })
+  );
+
+  const handleSelectTheme = (event) => {
+    setTheme(event.target.value);
+  };
+
+  console.log("themes: ", theme);
 
   return(
 		<div className="createGroup">
@@ -119,6 +134,20 @@ const CreateGroup = ({setCreateGroup}) => {
               name="name"
               onChange={handleChange}
             />
+            <div className="select">
+              <label>Тема: </label>
+              <select
+                value={theme}
+                onChange={handleSelectTheme}>
+                {themeIsLoading ? (
+                  "Загрузка"
+                ):(
+                  themeData.map(o => (
+                  <option key={o} value={o}>{o}</option>
+                ))
+                ) }
+              </select>
+            </div>
             <label>Описание</label>
             <input
               type="text"

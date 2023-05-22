@@ -68,6 +68,38 @@
   
 }
 
+.createGroup .wrapper form .select {
+  display: flex;
+  height: inherit;
+  gap: 10px
+}
+
+.createGroup .wrapper form .select label{
+  width: 60px;
+}
+
+.createGroup .wrapper form h2 {
+  /* font-size: 1.2rem; */
+  margin-bottom: 10px;
+}
+
+.createGroup .wrapper form  select {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  outline: none;
+  width: 100%;
+  max-width: 200px;
+  text-align: center;
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+.createGroup .wrapper form  option {
+  /* font-size: 1rem; */
+  text-align: center;
+} 
+
 .scroller {
   overflow-y: scroll;
   scrollbar-color: rebeccapurple green;

@@ -8,8 +8,16 @@ export const getRelationships = (req,res)=>{
     // ELSE 0
     // END DESC`;
 
-    const q = `SELECT DISTINCT u.* FROM users AS u 
-    LEFT JOIN relationships AS r ON (u.id = r.followedUserId) WHERE u.id != $1 AND r.followerUserId = $1
+    // const q = `SELECT DISTINCT u.* FROM users AS u 
+    // LEFT JOIN relationships AS r ON (u.id = r.followedUserId) WHERE u.id != $1 AND r.followerUserId = $1
+    // ORDER BY u.id ASC`;
+      
+    const q = `SELECT DISTINCT u.*, c.name AS country_name,
+    r.name AS region_name, city.name AS city_name FROM users AS u 
+    JOIN country AS c ON (c.id = u.country_id)
+    JOIN region AS r ON (r.id = u.region_id)
+    JOIN city ON (city.id = u.city_id)
+    LEFT JOIN relationships AS rel ON (u.id = rel.followedUserId) WHERE u.id != $1 AND rel.followerUserId = $1
     ORDER BY u.id ASC`;
    pool.query(q, [req.query.followerUserId], (err, data) => {
     // console.log("rel err: ", err);

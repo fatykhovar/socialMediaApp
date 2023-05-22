@@ -9,12 +9,14 @@ import ChoiceList from '../choiceList/ChoiseList';
 const Update = ({ setOpenUpdate, user }) => {
   const [cover, setCover] = useState(null);
   const [profile, setProfile] = useState(null);
-  const [country, setCountry] = useState('Россия');
-  const [region, setRegion] = useState('Татарстан');
-  const [city, setCity] = useState('Казань');
+  const [country, setCountry] = useState("Россия");
+  const [region, setRegion] = useState("Татарстан");
+  const [city, setCity] = useState("Казань");
   const [texts, setTexts] = useState({
     email: user.email,
     name: user.name,
+    study: user.study,
+    work: user.work,
   });
   const upload = async (file) => {
     //console.log(file);
@@ -27,9 +29,11 @@ const Update = ({ setOpenUpdate, user }) => {
       console.log(err);
     }
   };
+  
+  console.log("update texsts: ", texts);
 
   const handleChange = (e) => {
-    setTexts((prev) => ({ ...prev, [e.target.name]: [e.target.value] }));
+    setTexts((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const queryClient = useQueryClient();
@@ -57,7 +61,7 @@ const Update = ({ setOpenUpdate, user }) => {
     coverUrl = cover ? await upload(cover) : user.coverpic;
     profileUrl = profile ? await upload(profile) : user.profilepic;
 
-    mutation.mutate({ ...texts, coverPic: coverUrl, profilePic: profileUrl, country:country});
+    mutation.mutate({ ...texts, coverPic: coverUrl, profilePic: profileUrl, country:country, region:region, city:city});
     setOpenUpdate(false);
     setCover(null);
     setProfile(null);
@@ -75,7 +79,10 @@ const Update = ({ setOpenUpdate, user }) => {
     setCity(event.target.value);
   };
 
-  const countries = ['Option 1', 'Option 2', 'Option 3'];
+  console.log("country: ", country);
+  console.log("region: ", region);
+  console.log("city: ", city);
+
 
   const {isLoading: countryIsLoading, data: countryData} = useQuery(
     ["country"],
@@ -86,17 +93,17 @@ const Update = ({ setOpenUpdate, user }) => {
   );
 
   const {isLoading: regionIsLoading, data: regionData} = useQuery(
-    ["region"],
-    () =>
-      makeRequest.get("/location/region").then((res) => {
+    ["region", country],
+    () => 
+      makeRequest.get(`/location/region?country=${country}`).then((res) => {
       return res.data;
       })
   );
 
   const {isLoading: cityIsLoading, data: cityData} = useQuery(
-    ["city"],
+    ["city", region],
     () =>
-      makeRequest.get("/location/city").then((res) => {
+      makeRequest.get(`/location/city?region=${region}`).then((res) => {
       return res.data;
       })
   );
@@ -163,6 +170,20 @@ const Update = ({ setOpenUpdate, user }) => {
               name="name"
               onChange={handleChange}
             />
+            <label>Место учебы</label>
+            <input
+              type="text"
+              value={texts.study}
+              name="study"
+              onChange={handleChange}
+            />
+            <label>Место работы</label>
+            <input
+              type="text"
+              value={texts.work}
+              name="work"
+              onChange={handleChange}
+            />
             <div className="select">
               <label>Страна: </label>
               <select
@@ -205,14 +226,6 @@ const Update = ({ setOpenUpdate, user }) => {
                 ) }
               </select>
             </div>
-              {/* <ChoiceList choices={countries} selectedChoice={country} onSelect={handleSelectCountry} /> */}
-            {/* <label>Город</label>
-            <input
-              type="text"
-              name="city"
-              value={texts.city}
-              onChange={handleChange}
-            /> */}
             <button onClick={handleClick}>Сохранить</button>
           </form>
         </div>

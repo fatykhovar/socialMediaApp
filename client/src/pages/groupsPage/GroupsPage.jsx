@@ -15,8 +15,9 @@ const GroupsPage = ()=>{
   const [key, setKey] = useState("");
   const [createGroup, setCreateGroup] = useState(false);
   const [results, setResults] = useState([]);
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser, setIsHome } = useContext(AuthContext);
 
+  setIsHome(false);
   const { isLoading, error, data } = useQuery(["groups"], () =>
     makeRequest.get("/groups").then((res) => {
       console.log("groups: ", Object.values(res.data))
@@ -87,7 +88,6 @@ const GroupsPage = ()=>{
                 : relationshipData.map((group) => <GroupCard  group={group}/>)
             )
           }
-            
         </div>
       {createGroup && <CreateGroup setCreateGroup={setCreateGroup}/>}
     </div>

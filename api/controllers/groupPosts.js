@@ -4,6 +4,7 @@ import moment from "moment";
 
 export const getPosts = (req, res) => {
   const groupId = req.query.groupId;
+  const currentUserId = req.query.currentUserId;
   const token = req.cookies.accessToken;
   if (!token) return res.status(401).json("Not logged in!");
   // console.log("getPosts req: ", req);
@@ -22,11 +23,16 @@ export const getPosts = (req, res) => {
 
     const q = 
     groupId !== "undefined"
-        ? "SELECT g_p.*, g.id AS group_id, groupname, groupprofilepic FROM group_posts AS g_p JOIN groups AS g ON (g.id = g_p.group_id) WHERE g_p.group_id = $1 ORDER BY g_p.created_at DESC"
-        :"SELECT g_p.*, g.id AS group_id, groupname, groupprofilepic FROM group_posts AS g_p JOIN groups AS g ON (g.id = g_p.group_id) ORDER BY g_p.created_at DESC"
+        ? `SELECT g_p.*, g.id AS group_id, groupname, groupprofilepic FROM group_posts AS g_p JOIN groups AS g ON (g.id = g_p.group_id) WHERE g_p.group_id = $1 ORDER BY g_p.created_at DESC`
+        :`SELECT g_p.*, g.id AS group_id, g.groupname, g.groupprofilepic
+          FROM group_posts AS g_p 
+          JOIN group_relationships AS g_r ON (g_r.group_id = g_p.group_id)
+          JOIN groups AS g ON (g.id = g_p.group_id)
+          WHERE g_r.follower_id = $1
+          ORDER BY g_p.created_at DESC`
     const q1 = "SELECT * FROM posts"
     const values =
-    groupId !== "undefined" ? [groupId] : [];
+    groupId !== "undefined" ? [groupId] : [currentUserId];
 
     pool.query(q, values, (err, data) => {
       // console.log("getPosts data: ", data);
